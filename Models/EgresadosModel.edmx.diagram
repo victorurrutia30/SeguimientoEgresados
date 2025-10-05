@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="db2e9ff2e655433eb90b91f5bbd5f67b" Name="Diagram1">
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Administradore" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Carrera" Width="1.5" PointX="0.75" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.CVs_Egresados" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Egresado" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Empresa" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Encuestas_Base" Width="1.5" PointX="5.25" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Estrellas_Egresado" Width="1.5" PointX="12.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Evaluaciones_Proceso" Width="1.5" PointX="12.75" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Logs_Sistema" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Matching_Config" Width="1.5" PointX="7.5" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Matching_Resultados" Width="1.5" PointX="7.5" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Mentoria" Width="1.5" PointX="5.25" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Notificacione" Width="1.5" PointX="9.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Procesos_Seleccion" Width="1.5" PointX="10.5" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Sesiones_Mentoria" Width="1.5" PointX="7.5" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Usuarios_Empresa" Width="1.5" PointX="8.375" PointY="19.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.VW_Dashboard_Egresados" Width="1.5" PointX="11.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.VW_Estadisticas_Empresas" Width="1.5" PointX="13.75" PointY="2" IsExpanded="true" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_Egresados_Carreras" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_CVs_Egresados" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_MatchingResultados_CVs" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_ProcesosSeleccion_CVs" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_EncuestasBase_Egresados" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_Estrellas_Egresados" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_MatchingResultados_Egresados" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_Mentorias_Mentee" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_Mentorias_Mentor" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_ProcesosSeleccion_Egresados" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_MatchingConfig_Empresas" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_MatchingResultados_Empresas" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_ProcesosSeleccion_Empresas" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_UsuariosEmpresa_Empresas" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_Estrellas_Procesos" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_EvaluacionesProceso_Procesos" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_SesionesMentoria_Mentorias" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

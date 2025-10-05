@@ -1,0 +1,1572 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SistemaEgresadosUtecModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Administradores">
+          <Key>
+            <PropertyRef Name="id_admin" />
+          </Key>
+          <Property Name="id_admin" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="usuario" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="password_hash" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="nombre_completo" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="rol" Type="nvarchar" MaxLength="30" />
+          <Property Name="activo" Type="bit" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="ultimo_acceso" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Carreras">
+          <Key>
+            <PropertyRef Name="id_carrera" />
+          </Key>
+          <Property Name="id_carrera" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_carrera" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="facultad" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="duracion_semestres" Type="int" Nullable="false" />
+          <Property Name="activo" Type="bit" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="CVs_Egresados">
+          <Key>
+            <PropertyRef Name="id_cv" />
+          </Key>
+          <Property Name="id_cv" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_egresado" Type="int" Nullable="false" />
+          <Property Name="ruta_archivo" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="nombre_archivo" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="tamaño_archivo" Type="bigint" />
+          <Property Name="experiencia_años" Type="decimal" Precision="3" Scale="1" />
+          <Property Name="habilidades_principales" Type="nvarchar(max)" />
+          <Property Name="idiomas" Type="nvarchar(max)" />
+          <Property Name="certificaciones" Type="nvarchar(max)" />
+          <Property Name="disponible_busqueda" Type="bit" />
+          <Property Name="fecha_subida" Type="datetime2" Precision="7" />
+          <Property Name="fecha_actualizacion" Type="datetime2" Precision="7" />
+          <Property Name="veces_visualizado" Type="int" />
+        </EntityType>
+        <EntityType Name="Egresados">
+          <Key>
+            <PropertyRef Name="id_egresado" />
+          </Key>
+          <Property Name="id_egresado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="numero_documento" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="nombres" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="apellidos" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="telefono" Type="nvarchar" MaxLength="15" />
+          <Property Name="id_carrera" Type="int" Nullable="false" />
+          <Property Name="fecha_graduacion" Type="date" Nullable="false" />
+          <Property Name="promedio_academico" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="consentimiento_datos" Type="bit" />
+          <Property Name="fecha_registro" Type="datetime2" Precision="7" />
+          <Property Name="estado_activo" Type="bit" />
+          <Property Name="puntuacion_global" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="total_estrellas" Type="int" />
+          <Property Name="nivel_experiencia" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Empresas">
+          <Key>
+            <PropertyRef Name="id_empresa" />
+          </Key>
+          <Property Name="id_empresa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="razon_social" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="nit" Type="nvarchar" MaxLength="20" />
+          <Property Name="email_contacto" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="telefono" Type="nvarchar" MaxLength="15" />
+          <Property Name="direccion" Type="nvarchar" MaxLength="200" />
+          <Property Name="sector_economico" Type="nvarchar" MaxLength="100" />
+          <Property Name="tamaño_empresa" Type="nvarchar" MaxLength="20" />
+          <Property Name="vinculada_universidad" Type="bit" />
+          <Property Name="fecha_registro" Type="datetime2" Precision="7" />
+          <Property Name="estado_activo" Type="bit" />
+          <Property Name="puntuacion_empresa" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="total_contrataciones" Type="int" />
+        </EntityType>
+        <EntityType Name="Encuestas_Base">
+          <Key>
+            <PropertyRef Name="id_encuesta" />
+          </Key>
+          <Property Name="id_encuesta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_egresado" Type="int" Nullable="false" />
+          <Property Name="trabajando_actualmente" Type="bit" Nullable="false" />
+          <Property Name="empresa_actual" Type="nvarchar" MaxLength="100" />
+          <Property Name="cargo_actual" Type="nvarchar" MaxLength="100" />
+          <Property Name="salario_rango" Type="nvarchar" MaxLength="50" />
+          <Property Name="modalidad_trabajo" Type="nvarchar" MaxLength="20" />
+          <Property Name="satisfaccion_trabajo" Type="int" />
+          <Property Name="usa_conocimientos_carrera" Type="bit" />
+          <Property Name="tiempo_conseguir_trabajo" Type="int" />
+          <Property Name="fecha_encuesta" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Estrellas_Egresado">
+          <Key>
+            <PropertyRef Name="id_estrella" />
+          </Key>
+          <Property Name="id_estrella" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_egresado" Type="int" Nullable="false" />
+          <Property Name="id_proceso" Type="int" Nullable="false" />
+          <Property Name="estrella_numero" Type="int" Nullable="false" />
+          <Property Name="completada" Type="bit" />
+          <Property Name="puntuacion_obtenida" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="fecha_obtencion" Type="datetime2" Precision="7" />
+          <Property Name="fase_completada" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Evaluaciones_Proceso">
+          <Key>
+            <PropertyRef Name="id_evaluacion" />
+          </Key>
+          <Property Name="id_evaluacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_proceso" Type="int" Nullable="false" />
+          <Property Name="fase_evaluacion" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="puntuacion" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="puntuacion_maxima" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="comentarios" Type="nvarchar(max)" />
+          <Property Name="evaluador" Type="nvarchar" MaxLength="100" />
+          <Property Name="fecha_evaluacion" Type="datetime2" Precision="7" />
+          <Property Name="completada" Type="bit" />
+        </EntityType>
+        <EntityType Name="Logs_Sistema">
+          <Key>
+            <PropertyRef Name="id_log" />
+          </Key>
+          <Property Name="id_log" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="usuario_tipo" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="id_usuario" Type="int" Nullable="false" />
+          <Property Name="accion" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="tabla_afectada" Type="nvarchar" MaxLength="50" />
+          <Property Name="id_registro" Type="int" />
+          <Property Name="detalles" Type="nvarchar(max)" />
+          <Property Name="ip_address" Type="nvarchar" MaxLength="45" />
+          <Property Name="fecha_accion" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Matching_Config">
+          <Key>
+            <PropertyRef Name="id_config" />
+          </Key>
+          <Property Name="id_config" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_empresa" Type="int" Nullable="false" />
+          <Property Name="peso_experiencia" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="peso_habilidades" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="peso_calificaciones" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="peso_carrera" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="peso_idiomas" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="experiencia_minima" Type="int" />
+          <Property Name="carreras_preferidas" Type="nvarchar(max)" />
+          <Property Name="habilidades_requeridas" Type="nvarchar(max)" />
+          <Property Name="fecha_configuracion" Type="datetime2" Precision="7" />
+          <Property Name="activo" Type="bit" />
+        </EntityType>
+        <EntityType Name="Matching_Resultados">
+          <Key>
+            <PropertyRef Name="id_matching" />
+          </Key>
+          <Property Name="id_matching" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_empresa" Type="int" Nullable="false" />
+          <Property Name="id_egresado" Type="int" Nullable="false" />
+          <Property Name="id_cv" Type="int" Nullable="false" />
+          <Property Name="puntuacion_match" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="desglose_puntuacion" Type="nvarchar(max)" />
+          <Property Name="fecha_calculo" Type="datetime2" Precision="7" />
+          <Property Name="visualizado_empresa" Type="bit" />
+          <Property Name="fecha_visualizacion" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Mentorias">
+          <Key>
+            <PropertyRef Name="id_mentoria" />
+          </Key>
+          <Property Name="id_mentoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_mentor" Type="int" Nullable="false" />
+          <Property Name="id_mentee" Type="int" Nullable="false" />
+          <Property Name="area_mentoria" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="estado_mentoria" Type="nvarchar" MaxLength="20" />
+          <Property Name="fecha_inicio" Type="datetime2" Precision="7" />
+          <Property Name="fecha_fin" Type="datetime2" Precision="7" />
+          <Property Name="objetivos" Type="nvarchar(max)" />
+          <Property Name="progreso" Type="nvarchar(max)" />
+          <Property Name="calificacion_mentor" Type="int" />
+          <Property Name="calificacion_mentee" Type="int" />
+          <Property Name="comentarios_finales" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Notificaciones">
+          <Key>
+            <PropertyRef Name="id_notificacion" />
+          </Key>
+          <Property Name="id_notificacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="destinatario_tipo" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="id_destinatario" Type="int" Nullable="false" />
+          <Property Name="tipo_notificacion" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="titulo" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="mensaje" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="leida" Type="bit" />
+          <Property Name="email_enviado" Type="bit" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_lectura" Type="datetime2" Precision="7" />
+          <Property Name="datos_adicionales" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Procesos_Seleccion">
+          <Key>
+            <PropertyRef Name="id_proceso" />
+          </Key>
+          <Property Name="id_proceso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_empresa" Type="int" Nullable="false" />
+          <Property Name="id_egresado" Type="int" Nullable="false" />
+          <Property Name="id_cv" Type="int" Nullable="false" />
+          <Property Name="titulo_vacante" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="descripcion_vacante" Type="nvarchar(max)" />
+          <Property Name="salario_ofrecido" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="modalidad" Type="nvarchar" MaxLength="20" />
+          <Property Name="estado_proceso" Type="nvarchar" MaxLength="20" />
+          <Property Name="fecha_inicio" Type="datetime2" Precision="7" />
+          <Property Name="fecha_actualizacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_finalizacion" Type="datetime2" Precision="7" />
+          <Property Name="contratado" Type="bit" />
+          <Property Name="observaciones" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Sesiones_Mentoria">
+          <Key>
+            <PropertyRef Name="id_sesion" />
+          </Key>
+          <Property Name="id_sesion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_mentoria" Type="int" Nullable="false" />
+          <Property Name="fecha_sesion" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="duracion_minutos" Type="int" Nullable="false" />
+          <Property Name="modalidad" Type="nvarchar" MaxLength="20" />
+          <Property Name="temas_tratados" Type="nvarchar(max)" />
+          <Property Name="proximos_pasos" Type="nvarchar(max)" />
+          <Property Name="calificacion_sesion" Type="int" />
+          <Property Name="completada" Type="bit" />
+        </EntityType>
+        <EntityType Name="Usuarios_Empresa">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+          </Key>
+          <Property Name="id_usuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_empresa" Type="int" Nullable="false" />
+          <Property Name="nombre_usuario" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="password_hash" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="nombre_completo" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="cargo" Type="nvarchar" MaxLength="100" />
+          <Property Name="activo" Type="bit" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Dashboard_Egresados' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="VW_Dashboard_Egresados">
+          <Key>
+            <PropertyRef Name="id_egresado" />
+            <PropertyRef Name="nombre_completo" />
+            <PropertyRef Name="email" />
+            <PropertyRef Name="nombre_carrera" />
+            <PropertyRef Name="facultad" />
+            <PropertyRef Name="fecha_graduacion" />
+            <PropertyRef Name="estado_laboral" />
+          </Key>
+          <Property Name="id_egresado" Type="int" Nullable="false" />
+          <Property Name="nombre_completo" Type="nvarchar" MaxLength="201" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="nombre_carrera" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="facultad" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="fecha_graduacion" Type="date" Nullable="false" />
+          <Property Name="meses_desde_graduacion" Type="int" />
+          <Property Name="puntuacion_global" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="total_estrellas" Type="int" />
+          <Property Name="nivel_experiencia" Type="nvarchar" MaxLength="20" />
+          <Property Name="estado_laboral" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="total_aplicaciones" Type="int" />
+          <Property Name="total_contrataciones" Type="int" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Empresas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="VW_Estadisticas_Empresas">
+          <Key>
+            <PropertyRef Name="id_empresa" />
+            <PropertyRef Name="razon_social" />
+          </Key>
+          <Property Name="id_empresa" Type="int" Nullable="false" />
+          <Property Name="razon_social" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="sector_economico" Type="nvarchar" MaxLength="100" />
+          <Property Name="puntuacion_empresa" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="total_candidatos_evaluados" Type="int" />
+          <Property Name="total_contrataciones" Type="int" />
+          <Property Name="promedio_evaluacion_cv" Type="decimal" Precision="38" Scale="6" />
+          <Property Name="promedio_evaluacion_tecnica" Type="decimal" Precision="38" Scale="6" />
+        </EntityType>
+        <Association Name="FK_CVs_Egresados">
+          <End Role="Egresados" Type="Self.Egresados" Multiplicity="1" />
+          <End Role="CVs_Egresados" Type="Self.CVs_Egresados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="CVs_Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Egresados_Carreras">
+          <End Role="Carreras" Type="Self.Carreras" Multiplicity="1" />
+          <End Role="Egresados" Type="Self.Egresados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carreras">
+              <PropertyRef Name="id_carrera" />
+            </Principal>
+            <Dependent Role="Egresados">
+              <PropertyRef Name="id_carrera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EncuestasBase_Egresados">
+          <End Role="Egresados" Type="Self.Egresados" Multiplicity="1" />
+          <End Role="Encuestas_Base" Type="Self.Encuestas_Base" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="Encuestas_Base">
+              <PropertyRef Name="id_egresado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Estrellas_Egresados">
+          <End Role="Egresados" Type="Self.Egresados" Multiplicity="1" />
+          <End Role="Estrellas_Egresado" Type="Self.Estrellas_Egresado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="Estrellas_Egresado">
+              <PropertyRef Name="id_egresado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Estrellas_Procesos">
+          <End Role="Procesos_Seleccion" Type="Self.Procesos_Seleccion" Multiplicity="1" />
+          <End Role="Estrellas_Egresado" Type="Self.Estrellas_Egresado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Procesos_Seleccion">
+              <PropertyRef Name="id_proceso" />
+            </Principal>
+            <Dependent Role="Estrellas_Egresado">
+              <PropertyRef Name="id_proceso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EvaluacionesProceso_Procesos">
+          <End Role="Procesos_Seleccion" Type="Self.Procesos_Seleccion" Multiplicity="1" />
+          <End Role="Evaluaciones_Proceso" Type="Self.Evaluaciones_Proceso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Procesos_Seleccion">
+              <PropertyRef Name="id_proceso" />
+            </Principal>
+            <Dependent Role="Evaluaciones_Proceso">
+              <PropertyRef Name="id_proceso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MatchingConfig_Empresas">
+          <End Role="Empresas" Type="Self.Empresas" Multiplicity="1" />
+          <End Role="Matching_Config" Type="Self.Matching_Config" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresas">
+              <PropertyRef Name="id_empresa" />
+            </Principal>
+            <Dependent Role="Matching_Config">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MatchingResultados_CVs">
+          <End Role="CVs_Egresados" Type="Self.CVs_Egresados" Multiplicity="1" />
+          <End Role="Matching_Resultados" Type="Self.Matching_Resultados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CVs_Egresados">
+              <PropertyRef Name="id_cv" />
+            </Principal>
+            <Dependent Role="Matching_Resultados">
+              <PropertyRef Name="id_cv" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MatchingResultados_Egresados">
+          <End Role="Egresados" Type="Self.Egresados" Multiplicity="1" />
+          <End Role="Matching_Resultados" Type="Self.Matching_Resultados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="Matching_Resultados">
+              <PropertyRef Name="id_egresado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MatchingResultados_Empresas">
+          <End Role="Empresas" Type="Self.Empresas" Multiplicity="1" />
+          <End Role="Matching_Resultados" Type="Self.Matching_Resultados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresas">
+              <PropertyRef Name="id_empresa" />
+            </Principal>
+            <Dependent Role="Matching_Resultados">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mentorias_Mentee">
+          <End Role="Egresados" Type="Self.Egresados" Multiplicity="1" />
+          <End Role="Mentorias" Type="Self.Mentorias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="Mentorias">
+              <PropertyRef Name="id_mentee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mentorias_Mentor">
+          <End Role="Egresados" Type="Self.Egresados" Multiplicity="1" />
+          <End Role="Mentorias" Type="Self.Mentorias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="Mentorias">
+              <PropertyRef Name="id_mentor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcesosSeleccion_CVs">
+          <End Role="CVs_Egresados" Type="Self.CVs_Egresados" Multiplicity="1" />
+          <End Role="Procesos_Seleccion" Type="Self.Procesos_Seleccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CVs_Egresados">
+              <PropertyRef Name="id_cv" />
+            </Principal>
+            <Dependent Role="Procesos_Seleccion">
+              <PropertyRef Name="id_cv" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcesosSeleccion_Egresados">
+          <End Role="Egresados" Type="Self.Egresados" Multiplicity="1" />
+          <End Role="Procesos_Seleccion" Type="Self.Procesos_Seleccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="Procesos_Seleccion">
+              <PropertyRef Name="id_egresado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcesosSeleccion_Empresas">
+          <End Role="Empresas" Type="Self.Empresas" Multiplicity="1" />
+          <End Role="Procesos_Seleccion" Type="Self.Procesos_Seleccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresas">
+              <PropertyRef Name="id_empresa" />
+            </Principal>
+            <Dependent Role="Procesos_Seleccion">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SesionesMentoria_Mentorias">
+          <End Role="Mentorias" Type="Self.Mentorias" Multiplicity="1" />
+          <End Role="Sesiones_Mentoria" Type="Self.Sesiones_Mentoria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mentorias">
+              <PropertyRef Name="id_mentoria" />
+            </Principal>
+            <Dependent Role="Sesiones_Mentoria">
+              <PropertyRef Name="id_mentoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuariosEmpresa_Empresas">
+          <End Role="Empresas" Type="Self.Empresas" Multiplicity="1" />
+          <End Role="Usuarios_Empresa" Type="Self.Usuarios_Empresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresas">
+              <PropertyRef Name="id_empresa" />
+            </Principal>
+            <Dependent Role="Usuarios_Empresa">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SP_CalcularMatching" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_empresa" Type="int" Mode="In" />
+          <Parameter Name="top_candidates" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="SistemaEgresadosUtecModelStoreContainer">
+          <EntitySet Name="Administradores" EntityType="Self.Administradores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Carreras" EntityType="Self.Carreras" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CVs_Egresados" EntityType="Self.CVs_Egresados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Egresados" EntityType="Self.Egresados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empresas" EntityType="Self.Empresas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Encuestas_Base" EntityType="Self.Encuestas_Base" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Estrellas_Egresado" EntityType="Self.Estrellas_Egresado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Evaluaciones_Proceso" EntityType="Self.Evaluaciones_Proceso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Logs_Sistema" EntityType="Self.Logs_Sistema" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Matching_Config" EntityType="Self.Matching_Config" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Matching_Resultados" EntityType="Self.Matching_Resultados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mentorias" EntityType="Self.Mentorias" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notificaciones" EntityType="Self.Notificaciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Procesos_Seleccion" EntityType="Self.Procesos_Seleccion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sesiones_Mentoria" EntityType="Self.Sesiones_Mentoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios_Empresa" EntityType="Self.Usuarios_Empresa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VW_Dashboard_Egresados" EntityType="Self.VW_Dashboard_Egresados" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VW_Dashboard_Egresados].[id_egresado] AS [id_egresado], 
+    [VW_Dashboard_Egresados].[nombre_completo] AS [nombre_completo], 
+    [VW_Dashboard_Egresados].[email] AS [email], 
+    [VW_Dashboard_Egresados].[nombre_carrera] AS [nombre_carrera], 
+    [VW_Dashboard_Egresados].[facultad] AS [facultad], 
+    [VW_Dashboard_Egresados].[fecha_graduacion] AS [fecha_graduacion], 
+    [VW_Dashboard_Egresados].[meses_desde_graduacion] AS [meses_desde_graduacion], 
+    [VW_Dashboard_Egresados].[puntuacion_global] AS [puntuacion_global], 
+    [VW_Dashboard_Egresados].[total_estrellas] AS [total_estrellas], 
+    [VW_Dashboard_Egresados].[nivel_experiencia] AS [nivel_experiencia], 
+    [VW_Dashboard_Egresados].[estado_laboral] AS [estado_laboral], 
+    [VW_Dashboard_Egresados].[total_aplicaciones] AS [total_aplicaciones], 
+    [VW_Dashboard_Egresados].[total_contrataciones] AS [total_contrataciones]
+    FROM [dbo].[VW_Dashboard_Egresados] AS [VW_Dashboard_Egresados]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VW_Estadisticas_Empresas" EntityType="Self.VW_Estadisticas_Empresas" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VW_Estadisticas_Empresas].[id_empresa] AS [id_empresa], 
+    [VW_Estadisticas_Empresas].[razon_social] AS [razon_social], 
+    [VW_Estadisticas_Empresas].[sector_economico] AS [sector_economico], 
+    [VW_Estadisticas_Empresas].[puntuacion_empresa] AS [puntuacion_empresa], 
+    [VW_Estadisticas_Empresas].[total_candidatos_evaluados] AS [total_candidatos_evaluados], 
+    [VW_Estadisticas_Empresas].[total_contrataciones] AS [total_contrataciones], 
+    [VW_Estadisticas_Empresas].[promedio_evaluacion_cv] AS [promedio_evaluacion_cv], 
+    [VW_Estadisticas_Empresas].[promedio_evaluacion_tecnica] AS [promedio_evaluacion_tecnica]
+    FROM [dbo].[VW_Estadisticas_Empresas] AS [VW_Estadisticas_Empresas]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_CVs_Egresados" Association="Self.FK_CVs_Egresados">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="CVs_Egresados" EntitySet="CVs_Egresados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Egresados_Carreras" Association="Self.FK_Egresados_Carreras">
+            <End Role="Carreras" EntitySet="Carreras" />
+            <End Role="Egresados" EntitySet="Egresados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EncuestasBase_Egresados" Association="Self.FK_EncuestasBase_Egresados">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="Encuestas_Base" EntitySet="Encuestas_Base" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Estrellas_Egresados" Association="Self.FK_Estrellas_Egresados">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="Estrellas_Egresado" EntitySet="Estrellas_Egresado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Estrellas_Procesos" Association="Self.FK_Estrellas_Procesos">
+            <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
+            <End Role="Estrellas_Egresado" EntitySet="Estrellas_Egresado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionesProceso_Procesos" Association="Self.FK_EvaluacionesProceso_Procesos">
+            <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
+            <End Role="Evaluaciones_Proceso" EntitySet="Evaluaciones_Proceso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MatchingConfig_Empresas" Association="Self.FK_MatchingConfig_Empresas">
+            <End Role="Empresas" EntitySet="Empresas" />
+            <End Role="Matching_Config" EntitySet="Matching_Config" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MatchingResultados_CVs" Association="Self.FK_MatchingResultados_CVs">
+            <End Role="CVs_Egresados" EntitySet="CVs_Egresados" />
+            <End Role="Matching_Resultados" EntitySet="Matching_Resultados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MatchingResultados_Egresados" Association="Self.FK_MatchingResultados_Egresados">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="Matching_Resultados" EntitySet="Matching_Resultados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MatchingResultados_Empresas" Association="Self.FK_MatchingResultados_Empresas">
+            <End Role="Empresas" EntitySet="Empresas" />
+            <End Role="Matching_Resultados" EntitySet="Matching_Resultados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mentorias_Mentee" Association="Self.FK_Mentorias_Mentee">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="Mentorias" EntitySet="Mentorias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mentorias_Mentor" Association="Self.FK_Mentorias_Mentor">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="Mentorias" EntitySet="Mentorias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcesosSeleccion_CVs" Association="Self.FK_ProcesosSeleccion_CVs">
+            <End Role="CVs_Egresados" EntitySet="CVs_Egresados" />
+            <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcesosSeleccion_Egresados" Association="Self.FK_ProcesosSeleccion_Egresados">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcesosSeleccion_Empresas" Association="Self.FK_ProcesosSeleccion_Empresas">
+            <End Role="Empresas" EntitySet="Empresas" />
+            <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SesionesMentoria_Mentorias" Association="Self.FK_SesionesMentoria_Mentorias">
+            <End Role="Mentorias" EntitySet="Mentorias" />
+            <End Role="Sesiones_Mentoria" EntitySet="Sesiones_Mentoria" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuariosEmpresa_Empresas" Association="Self.FK_UsuariosEmpresa_Empresas">
+            <End Role="Empresas" EntitySet="Empresas" />
+            <End Role="Usuarios_Empresa" EntitySet="Usuarios_Empresa" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SistemaEgresadosUtecModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Administradore">
+          <Key>
+            <PropertyRef Name="id_admin" />
+          </Key>
+          <Property Name="id_admin" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password_hash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nombre_completo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="rol" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="activo" Type="Boolean" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="ultimo_acceso" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="Carrera">
+          <Key>
+            <PropertyRef Name="id_carrera" />
+          </Key>
+          <Property Name="id_carrera" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_carrera" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="facultad" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="duracion_semestres" Type="Int32" Nullable="false" />
+          <Property Name="activo" Type="Boolean" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Egresados" Relationship="Self.FK_Egresados_Carreras" FromRole="Carreras" ToRole="Egresados" />
+        </EntityType>
+        <EntityType Name="CVs_Egresados">
+          <Key>
+            <PropertyRef Name="id_cv" />
+          </Key>
+          <Property Name="id_cv" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_egresado" Type="Int32" Nullable="false" />
+          <Property Name="ruta_archivo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nombre_archivo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="tamaño_archivo" Type="Int64" />
+          <Property Name="experiencia_años" Type="Decimal" Precision="3" Scale="1" />
+          <Property Name="habilidades_principales" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="idiomas" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="certificaciones" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="disponible_busqueda" Type="Boolean" />
+          <Property Name="fecha_subida" Type="DateTime" Precision="7" />
+          <Property Name="fecha_actualizacion" Type="DateTime" Precision="7" />
+          <Property Name="veces_visualizado" Type="Int32" />
+          <NavigationProperty Name="Egresado" Relationship="Self.FK_CVs_Egresados" FromRole="CVs_Egresados" ToRole="Egresados" />
+          <NavigationProperty Name="Matching_Resultados" Relationship="Self.FK_MatchingResultados_CVs" FromRole="CVs_Egresados" ToRole="Matching_Resultados" />
+          <NavigationProperty Name="Procesos_Seleccion" Relationship="Self.FK_ProcesosSeleccion_CVs" FromRole="CVs_Egresados" ToRole="Procesos_Seleccion" />
+        </EntityType>
+        <EntityType Name="Egresado">
+          <Key>
+            <PropertyRef Name="id_egresado" />
+          </Key>
+          <Property Name="id_egresado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="numero_documento" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nombres" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="apellidos" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="id_carrera" Type="Int32" Nullable="false" />
+          <Property Name="fecha_graduacion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="promedio_academico" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="consentimiento_datos" Type="Boolean" />
+          <Property Name="fecha_registro" Type="DateTime" Precision="7" />
+          <Property Name="estado_activo" Type="Boolean" />
+          <Property Name="puntuacion_global" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="total_estrellas" Type="Int32" />
+          <Property Name="nivel_experiencia" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Carrera" Relationship="Self.FK_Egresados_Carreras" FromRole="Egresados" ToRole="Carreras" />
+          <NavigationProperty Name="CVs_Egresados" Relationship="Self.FK_CVs_Egresados" FromRole="Egresados" ToRole="CVs_Egresados" />
+          <NavigationProperty Name="Encuestas_Base" Relationship="Self.FK_EncuestasBase_Egresados" FromRole="Egresados" ToRole="Encuestas_Base" />
+          <NavigationProperty Name="Estrellas_Egresado" Relationship="Self.FK_Estrellas_Egresados" FromRole="Egresados" ToRole="Estrellas_Egresado" />
+          <NavigationProperty Name="Matching_Resultados" Relationship="Self.FK_MatchingResultados_Egresados" FromRole="Egresados" ToRole="Matching_Resultados" />
+          <NavigationProperty Name="Mentorias" Relationship="Self.FK_Mentorias_Mentee" FromRole="Egresados" ToRole="Mentorias" />
+          <NavigationProperty Name="Mentorias1" Relationship="Self.FK_Mentorias_Mentor" FromRole="Egresados" ToRole="Mentorias" />
+          <NavigationProperty Name="Procesos_Seleccion" Relationship="Self.FK_ProcesosSeleccion_Egresados" FromRole="Egresados" ToRole="Procesos_Seleccion" />
+        </EntityType>
+        <EntityType Name="Empresa">
+          <Key>
+            <PropertyRef Name="id_empresa" />
+          </Key>
+          <Property Name="id_empresa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="razon_social" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nit" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="email_contacto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="direccion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="sector_economico" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="tamaño_empresa" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="vinculada_universidad" Type="Boolean" />
+          <Property Name="fecha_registro" Type="DateTime" Precision="7" />
+          <Property Name="estado_activo" Type="Boolean" />
+          <Property Name="puntuacion_empresa" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="total_contrataciones" Type="Int32" />
+          <NavigationProperty Name="Matching_Config" Relationship="Self.FK_MatchingConfig_Empresas" FromRole="Empresas" ToRole="Matching_Config" />
+          <NavigationProperty Name="Matching_Resultados" Relationship="Self.FK_MatchingResultados_Empresas" FromRole="Empresas" ToRole="Matching_Resultados" />
+          <NavigationProperty Name="Procesos_Seleccion" Relationship="Self.FK_ProcesosSeleccion_Empresas" FromRole="Empresas" ToRole="Procesos_Seleccion" />
+          <NavigationProperty Name="Usuarios_Empresa" Relationship="Self.FK_UsuariosEmpresa_Empresas" FromRole="Empresas" ToRole="Usuarios_Empresa" />
+        </EntityType>
+        <EntityType Name="Encuestas_Base">
+          <Key>
+            <PropertyRef Name="id_encuesta" />
+          </Key>
+          <Property Name="id_encuesta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_egresado" Type="Int32" Nullable="false" />
+          <Property Name="trabajando_actualmente" Type="Boolean" Nullable="false" />
+          <Property Name="empresa_actual" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cargo_actual" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="salario_rango" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="modalidad_trabajo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="satisfaccion_trabajo" Type="Int32" />
+          <Property Name="usa_conocimientos_carrera" Type="Boolean" />
+          <Property Name="tiempo_conseguir_trabajo" Type="Int32" />
+          <Property Name="fecha_encuesta" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Egresado" Relationship="Self.FK_EncuestasBase_Egresados" FromRole="Encuestas_Base" ToRole="Egresados" />
+        </EntityType>
+        <EntityType Name="Estrellas_Egresado">
+          <Key>
+            <PropertyRef Name="id_estrella" />
+          </Key>
+          <Property Name="id_estrella" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_egresado" Type="Int32" Nullable="false" />
+          <Property Name="id_proceso" Type="Int32" Nullable="false" />
+          <Property Name="estrella_numero" Type="Int32" Nullable="false" />
+          <Property Name="completada" Type="Boolean" />
+          <Property Name="puntuacion_obtenida" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="fecha_obtencion" Type="DateTime" Precision="7" />
+          <Property Name="fase_completada" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Egresado" Relationship="Self.FK_Estrellas_Egresados" FromRole="Estrellas_Egresado" ToRole="Egresados" />
+          <NavigationProperty Name="Procesos_Seleccion" Relationship="Self.FK_Estrellas_Procesos" FromRole="Estrellas_Egresado" ToRole="Procesos_Seleccion" />
+        </EntityType>
+        <EntityType Name="Evaluaciones_Proceso">
+          <Key>
+            <PropertyRef Name="id_evaluacion" />
+          </Key>
+          <Property Name="id_evaluacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_proceso" Type="Int32" Nullable="false" />
+          <Property Name="fase_evaluacion" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="puntuacion" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="puntuacion_maxima" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="comentarios" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="evaluador" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="fecha_evaluacion" Type="DateTime" Precision="7" />
+          <Property Name="completada" Type="Boolean" />
+          <NavigationProperty Name="Procesos_Seleccion" Relationship="Self.FK_EvaluacionesProceso_Procesos" FromRole="Evaluaciones_Proceso" ToRole="Procesos_Seleccion" />
+        </EntityType>
+        <EntityType Name="Logs_Sistema">
+          <Key>
+            <PropertyRef Name="id_log" />
+          </Key>
+          <Property Name="id_log" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="usuario_tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <Property Name="accion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="tabla_afectada" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="id_registro" Type="Int32" />
+          <Property Name="detalles" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ip_address" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="fecha_accion" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="Matching_Config">
+          <Key>
+            <PropertyRef Name="id_config" />
+          </Key>
+          <Property Name="id_config" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_empresa" Type="Int32" Nullable="false" />
+          <Property Name="peso_experiencia" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="peso_habilidades" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="peso_calificaciones" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="peso_carrera" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="peso_idiomas" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="experiencia_minima" Type="Int32" />
+          <Property Name="carreras_preferidas" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="habilidades_requeridas" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="fecha_configuracion" Type="DateTime" Precision="7" />
+          <Property Name="activo" Type="Boolean" />
+          <NavigationProperty Name="Empresa" Relationship="Self.FK_MatchingConfig_Empresas" FromRole="Matching_Config" ToRole="Empresas" />
+        </EntityType>
+        <EntityType Name="Matching_Resultados">
+          <Key>
+            <PropertyRef Name="id_matching" />
+          </Key>
+          <Property Name="id_matching" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_empresa" Type="Int32" Nullable="false" />
+          <Property Name="id_egresado" Type="Int32" Nullable="false" />
+          <Property Name="id_cv" Type="Int32" Nullable="false" />
+          <Property Name="puntuacion_match" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="desglose_puntuacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="fecha_calculo" Type="DateTime" Precision="7" />
+          <Property Name="visualizado_empresa" Type="Boolean" />
+          <Property Name="fecha_visualizacion" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="CVs_Egresados" Relationship="Self.FK_MatchingResultados_CVs" FromRole="Matching_Resultados" ToRole="CVs_Egresados" />
+          <NavigationProperty Name="Egresado" Relationship="Self.FK_MatchingResultados_Egresados" FromRole="Matching_Resultados" ToRole="Egresados" />
+          <NavigationProperty Name="Empresa" Relationship="Self.FK_MatchingResultados_Empresas" FromRole="Matching_Resultados" ToRole="Empresas" />
+        </EntityType>
+        <EntityType Name="Mentoria">
+          <Key>
+            <PropertyRef Name="id_mentoria" />
+          </Key>
+          <Property Name="id_mentoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_mentor" Type="Int32" Nullable="false" />
+          <Property Name="id_mentee" Type="Int32" Nullable="false" />
+          <Property Name="area_mentoria" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="estado_mentoria" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="fecha_inicio" Type="DateTime" Precision="7" />
+          <Property Name="fecha_fin" Type="DateTime" Precision="7" />
+          <Property Name="objetivos" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="progreso" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="calificacion_mentor" Type="Int32" />
+          <Property Name="calificacion_mentee" Type="Int32" />
+          <Property Name="comentarios_finales" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Egresado" Relationship="Self.FK_Mentorias_Mentee" FromRole="Mentorias" ToRole="Egresados" />
+          <NavigationProperty Name="Egresado1" Relationship="Self.FK_Mentorias_Mentor" FromRole="Mentorias" ToRole="Egresados" />
+          <NavigationProperty Name="Sesiones_Mentoria" Relationship="Self.FK_SesionesMentoria_Mentorias" FromRole="Mentorias" ToRole="Sesiones_Mentoria" />
+        </EntityType>
+        <EntityType Name="Notificacione">
+          <Key>
+            <PropertyRef Name="id_notificacion" />
+          </Key>
+          <Property Name="id_notificacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="destinatario_tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id_destinatario" Type="Int32" Nullable="false" />
+          <Property Name="tipo_notificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="titulo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="mensaje" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="leida" Type="Boolean" />
+          <Property Name="email_enviado" Type="Boolean" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_lectura" Type="DateTime" Precision="7" />
+          <Property Name="datos_adicionales" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Procesos_Seleccion">
+          <Key>
+            <PropertyRef Name="id_proceso" />
+          </Key>
+          <Property Name="id_proceso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_empresa" Type="Int32" Nullable="false" />
+          <Property Name="id_egresado" Type="Int32" Nullable="false" />
+          <Property Name="id_cv" Type="Int32" Nullable="false" />
+          <Property Name="titulo_vacante" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="descripcion_vacante" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="salario_ofrecido" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="modalidad" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="estado_proceso" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="fecha_inicio" Type="DateTime" Precision="7" />
+          <Property Name="fecha_actualizacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_finalizacion" Type="DateTime" Precision="7" />
+          <Property Name="contratado" Type="Boolean" />
+          <Property Name="observaciones" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CVs_Egresados" Relationship="Self.FK_ProcesosSeleccion_CVs" FromRole="Procesos_Seleccion" ToRole="CVs_Egresados" />
+          <NavigationProperty Name="Egresado" Relationship="Self.FK_ProcesosSeleccion_Egresados" FromRole="Procesos_Seleccion" ToRole="Egresados" />
+          <NavigationProperty Name="Empresa" Relationship="Self.FK_ProcesosSeleccion_Empresas" FromRole="Procesos_Seleccion" ToRole="Empresas" />
+          <NavigationProperty Name="Estrellas_Egresado" Relationship="Self.FK_Estrellas_Procesos" FromRole="Procesos_Seleccion" ToRole="Estrellas_Egresado" />
+          <NavigationProperty Name="Evaluaciones_Proceso" Relationship="Self.FK_EvaluacionesProceso_Procesos" FromRole="Procesos_Seleccion" ToRole="Evaluaciones_Proceso" />
+        </EntityType>
+        <EntityType Name="Sesiones_Mentoria">
+          <Key>
+            <PropertyRef Name="id_sesion" />
+          </Key>
+          <Property Name="id_sesion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_mentoria" Type="Int32" Nullable="false" />
+          <Property Name="fecha_sesion" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="duracion_minutos" Type="Int32" Nullable="false" />
+          <Property Name="modalidad" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="temas_tratados" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="proximos_pasos" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="calificacion_sesion" Type="Int32" />
+          <Property Name="completada" Type="Boolean" />
+          <NavigationProperty Name="Mentoria" Relationship="Self.FK_SesionesMentoria_Mentorias" FromRole="Sesiones_Mentoria" ToRole="Mentorias" />
+        </EntityType>
+        <EntityType Name="Usuarios_Empresa">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+          </Key>
+          <Property Name="id_usuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_empresa" Type="Int32" Nullable="false" />
+          <Property Name="nombre_usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password_hash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nombre_completo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="cargo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="activo" Type="Boolean" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Empresa" Relationship="Self.FK_UsuariosEmpresa_Empresas" FromRole="Usuarios_Empresa" ToRole="Empresas" />
+        </EntityType>
+        <EntityType Name="VW_Dashboard_Egresados">
+          <Key>
+            <PropertyRef Name="id_egresado" />
+            <PropertyRef Name="nombre_completo" />
+            <PropertyRef Name="email" />
+            <PropertyRef Name="nombre_carrera" />
+            <PropertyRef Name="facultad" />
+            <PropertyRef Name="fecha_graduacion" />
+            <PropertyRef Name="estado_laboral" />
+          </Key>
+          <Property Name="id_egresado" Type="Int32" Nullable="false" />
+          <Property Name="nombre_completo" Type="String" MaxLength="201" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nombre_carrera" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="facultad" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="fecha_graduacion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="meses_desde_graduacion" Type="Int32" />
+          <Property Name="puntuacion_global" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="total_estrellas" Type="Int32" />
+          <Property Name="nivel_experiencia" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="estado_laboral" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="total_aplicaciones" Type="Int32" />
+          <Property Name="total_contrataciones" Type="Int32" />
+        </EntityType>
+        <EntityType Name="VW_Estadisticas_Empresas">
+          <Key>
+            <PropertyRef Name="id_empresa" />
+            <PropertyRef Name="razon_social" />
+          </Key>
+          <Property Name="id_empresa" Type="Int32" Nullable="false" />
+          <Property Name="razon_social" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sector_economico" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="puntuacion_empresa" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="total_candidatos_evaluados" Type="Int32" />
+          <Property Name="total_contrataciones" Type="Int32" />
+          <Property Name="promedio_evaluacion_cv" Type="Decimal" Precision="38" Scale="6" />
+          <Property Name="promedio_evaluacion_tecnica" Type="Decimal" Precision="38" Scale="6" />
+        </EntityType>
+        <Association Name="FK_Egresados_Carreras">
+          <End Role="Carreras" Type="Self.Carrera" Multiplicity="1" />
+          <End Role="Egresados" Type="Self.Egresado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carreras">
+              <PropertyRef Name="id_carrera" />
+            </Principal>
+            <Dependent Role="Egresados">
+              <PropertyRef Name="id_carrera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CVs_Egresados">
+          <End Role="Egresados" Type="Self.Egresado" Multiplicity="1" />
+          <End Role="CVs_Egresados" Type="Self.CVs_Egresados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="CVs_Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MatchingResultados_CVs">
+          <End Role="CVs_Egresados" Type="Self.CVs_Egresados" Multiplicity="1" />
+          <End Role="Matching_Resultados" Type="Self.Matching_Resultados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CVs_Egresados">
+              <PropertyRef Name="id_cv" />
+            </Principal>
+            <Dependent Role="Matching_Resultados">
+              <PropertyRef Name="id_cv" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcesosSeleccion_CVs">
+          <End Role="CVs_Egresados" Type="Self.CVs_Egresados" Multiplicity="1" />
+          <End Role="Procesos_Seleccion" Type="Self.Procesos_Seleccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CVs_Egresados">
+              <PropertyRef Name="id_cv" />
+            </Principal>
+            <Dependent Role="Procesos_Seleccion">
+              <PropertyRef Name="id_cv" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EncuestasBase_Egresados">
+          <End Role="Egresados" Type="Self.Egresado" Multiplicity="1" />
+          <End Role="Encuestas_Base" Type="Self.Encuestas_Base" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="Encuestas_Base">
+              <PropertyRef Name="id_egresado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Estrellas_Egresados">
+          <End Role="Egresados" Type="Self.Egresado" Multiplicity="1" />
+          <End Role="Estrellas_Egresado" Type="Self.Estrellas_Egresado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="Estrellas_Egresado">
+              <PropertyRef Name="id_egresado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MatchingResultados_Egresados">
+          <End Role="Egresados" Type="Self.Egresado" Multiplicity="1" />
+          <End Role="Matching_Resultados" Type="Self.Matching_Resultados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="Matching_Resultados">
+              <PropertyRef Name="id_egresado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mentorias_Mentee">
+          <End Role="Egresados" Type="Self.Egresado" Multiplicity="1" />
+          <End Role="Mentorias" Type="Self.Mentoria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="Mentorias">
+              <PropertyRef Name="id_mentee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mentorias_Mentor">
+          <End Role="Egresados" Type="Self.Egresado" Multiplicity="1" />
+          <End Role="Mentorias" Type="Self.Mentoria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="Mentorias">
+              <PropertyRef Name="id_mentor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcesosSeleccion_Egresados">
+          <End Role="Egresados" Type="Self.Egresado" Multiplicity="1" />
+          <End Role="Procesos_Seleccion" Type="Self.Procesos_Seleccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Egresados">
+              <PropertyRef Name="id_egresado" />
+            </Principal>
+            <Dependent Role="Procesos_Seleccion">
+              <PropertyRef Name="id_egresado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MatchingConfig_Empresas">
+          <End Role="Empresas" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="Matching_Config" Type="Self.Matching_Config" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresas">
+              <PropertyRef Name="id_empresa" />
+            </Principal>
+            <Dependent Role="Matching_Config">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MatchingResultados_Empresas">
+          <End Role="Empresas" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="Matching_Resultados" Type="Self.Matching_Resultados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresas">
+              <PropertyRef Name="id_empresa" />
+            </Principal>
+            <Dependent Role="Matching_Resultados">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcesosSeleccion_Empresas">
+          <End Role="Empresas" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="Procesos_Seleccion" Type="Self.Procesos_Seleccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresas">
+              <PropertyRef Name="id_empresa" />
+            </Principal>
+            <Dependent Role="Procesos_Seleccion">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuariosEmpresa_Empresas">
+          <End Role="Empresas" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="Usuarios_Empresa" Type="Self.Usuarios_Empresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresas">
+              <PropertyRef Name="id_empresa" />
+            </Principal>
+            <Dependent Role="Usuarios_Empresa">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Estrellas_Procesos">
+          <End Role="Procesos_Seleccion" Type="Self.Procesos_Seleccion" Multiplicity="1" />
+          <End Role="Estrellas_Egresado" Type="Self.Estrellas_Egresado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Procesos_Seleccion">
+              <PropertyRef Name="id_proceso" />
+            </Principal>
+            <Dependent Role="Estrellas_Egresado">
+              <PropertyRef Name="id_proceso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EvaluacionesProceso_Procesos">
+          <End Role="Procesos_Seleccion" Type="Self.Procesos_Seleccion" Multiplicity="1" />
+          <End Role="Evaluaciones_Proceso" Type="Self.Evaluaciones_Proceso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Procesos_Seleccion">
+              <PropertyRef Name="id_proceso" />
+            </Principal>
+            <Dependent Role="Evaluaciones_Proceso">
+              <PropertyRef Name="id_proceso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SesionesMentoria_Mentorias">
+          <End Role="Mentorias" Type="Self.Mentoria" Multiplicity="1" />
+          <End Role="Sesiones_Mentoria" Type="Self.Sesiones_Mentoria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mentorias">
+              <PropertyRef Name="id_mentoria" />
+            </Principal>
+            <Dependent Role="Sesiones_Mentoria">
+              <PropertyRef Name="id_mentoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SistemaEgresadosUtecEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Administradores" EntityType="Self.Administradore" />
+          <EntitySet Name="Carreras" EntityType="Self.Carrera" />
+          <EntitySet Name="CVs_Egresados" EntityType="Self.CVs_Egresados" />
+          <EntitySet Name="Egresados" EntityType="Self.Egresado" />
+          <EntitySet Name="Empresas" EntityType="Self.Empresa" />
+          <EntitySet Name="Encuestas_Base" EntityType="Self.Encuestas_Base" />
+          <EntitySet Name="Estrellas_Egresado" EntityType="Self.Estrellas_Egresado" />
+          <EntitySet Name="Evaluaciones_Proceso" EntityType="Self.Evaluaciones_Proceso" />
+          <EntitySet Name="Logs_Sistema" EntityType="Self.Logs_Sistema" />
+          <EntitySet Name="Matching_Config" EntityType="Self.Matching_Config" />
+          <EntitySet Name="Matching_Resultados" EntityType="Self.Matching_Resultados" />
+          <EntitySet Name="Mentorias" EntityType="Self.Mentoria" />
+          <EntitySet Name="Notificaciones" EntityType="Self.Notificacione" />
+          <EntitySet Name="Procesos_Seleccion" EntityType="Self.Procesos_Seleccion" />
+          <EntitySet Name="Sesiones_Mentoria" EntityType="Self.Sesiones_Mentoria" />
+          <EntitySet Name="Usuarios_Empresa" EntityType="Self.Usuarios_Empresa" />
+          <EntitySet Name="VW_Dashboard_Egresados" EntityType="Self.VW_Dashboard_Egresados" />
+          <EntitySet Name="VW_Estadisticas_Empresas" EntityType="Self.VW_Estadisticas_Empresas" />
+          <AssociationSet Name="FK_Egresados_Carreras" Association="Self.FK_Egresados_Carreras">
+            <End Role="Carreras" EntitySet="Carreras" />
+            <End Role="Egresados" EntitySet="Egresados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CVs_Egresados" Association="Self.FK_CVs_Egresados">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="CVs_Egresados" EntitySet="CVs_Egresados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MatchingResultados_CVs" Association="Self.FK_MatchingResultados_CVs">
+            <End Role="CVs_Egresados" EntitySet="CVs_Egresados" />
+            <End Role="Matching_Resultados" EntitySet="Matching_Resultados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcesosSeleccion_CVs" Association="Self.FK_ProcesosSeleccion_CVs">
+            <End Role="CVs_Egresados" EntitySet="CVs_Egresados" />
+            <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EncuestasBase_Egresados" Association="Self.FK_EncuestasBase_Egresados">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="Encuestas_Base" EntitySet="Encuestas_Base" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Estrellas_Egresados" Association="Self.FK_Estrellas_Egresados">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="Estrellas_Egresado" EntitySet="Estrellas_Egresado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MatchingResultados_Egresados" Association="Self.FK_MatchingResultados_Egresados">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="Matching_Resultados" EntitySet="Matching_Resultados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mentorias_Mentee" Association="Self.FK_Mentorias_Mentee">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="Mentorias" EntitySet="Mentorias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mentorias_Mentor" Association="Self.FK_Mentorias_Mentor">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="Mentorias" EntitySet="Mentorias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcesosSeleccion_Egresados" Association="Self.FK_ProcesosSeleccion_Egresados">
+            <End Role="Egresados" EntitySet="Egresados" />
+            <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MatchingConfig_Empresas" Association="Self.FK_MatchingConfig_Empresas">
+            <End Role="Empresas" EntitySet="Empresas" />
+            <End Role="Matching_Config" EntitySet="Matching_Config" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MatchingResultados_Empresas" Association="Self.FK_MatchingResultados_Empresas">
+            <End Role="Empresas" EntitySet="Empresas" />
+            <End Role="Matching_Resultados" EntitySet="Matching_Resultados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcesosSeleccion_Empresas" Association="Self.FK_ProcesosSeleccion_Empresas">
+            <End Role="Empresas" EntitySet="Empresas" />
+            <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuariosEmpresa_Empresas" Association="Self.FK_UsuariosEmpresa_Empresas">
+            <End Role="Empresas" EntitySet="Empresas" />
+            <End Role="Usuarios_Empresa" EntitySet="Usuarios_Empresa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Estrellas_Procesos" Association="Self.FK_Estrellas_Procesos">
+            <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
+            <End Role="Estrellas_Egresado" EntitySet="Estrellas_Egresado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionesProceso_Procesos" Association="Self.FK_EvaluacionesProceso_Procesos">
+            <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
+            <End Role="Evaluaciones_Proceso" EntitySet="Evaluaciones_Proceso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SesionesMentoria_Mentorias" Association="Self.FK_SesionesMentoria_Mentorias">
+            <End Role="Mentorias" EntitySet="Mentorias" />
+            <End Role="Sesiones_Mentoria" EntitySet="Sesiones_Mentoria" />
+          </AssociationSet>
+          <FunctionImport Name="SP_CalcularMatching">
+            <Parameter Name="id_empresa" Mode="In" Type="Int32" />
+            <Parameter Name="top_candidates" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SistemaEgresadosUtecModelStoreContainer" CdmEntityContainer="SistemaEgresadosUtecEntities">
+          <EntitySetMapping Name="Administradores">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Administradore">
+              <MappingFragment StoreEntitySet="Administradores">
+                <ScalarProperty Name="id_admin" ColumnName="id_admin" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password_hash" ColumnName="password_hash" />
+                <ScalarProperty Name="nombre_completo" ColumnName="nombre_completo" />
+                <ScalarProperty Name="rol" ColumnName="rol" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="ultimo_acceso" ColumnName="ultimo_acceso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Carreras">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Carrera">
+              <MappingFragment StoreEntitySet="Carreras">
+                <ScalarProperty Name="id_carrera" ColumnName="id_carrera" />
+                <ScalarProperty Name="nombre_carrera" ColumnName="nombre_carrera" />
+                <ScalarProperty Name="facultad" ColumnName="facultad" />
+                <ScalarProperty Name="duracion_semestres" ColumnName="duracion_semestres" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CVs_Egresados">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.CVs_Egresados">
+              <MappingFragment StoreEntitySet="CVs_Egresados">
+                <ScalarProperty Name="id_cv" ColumnName="id_cv" />
+                <ScalarProperty Name="id_egresado" ColumnName="id_egresado" />
+                <ScalarProperty Name="ruta_archivo" ColumnName="ruta_archivo" />
+                <ScalarProperty Name="nombre_archivo" ColumnName="nombre_archivo" />
+                <ScalarProperty Name="tamaño_archivo" ColumnName="tamaño_archivo" />
+                <ScalarProperty Name="experiencia_años" ColumnName="experiencia_años" />
+                <ScalarProperty Name="habilidades_principales" ColumnName="habilidades_principales" />
+                <ScalarProperty Name="idiomas" ColumnName="idiomas" />
+                <ScalarProperty Name="certificaciones" ColumnName="certificaciones" />
+                <ScalarProperty Name="disponible_busqueda" ColumnName="disponible_busqueda" />
+                <ScalarProperty Name="fecha_subida" ColumnName="fecha_subida" />
+                <ScalarProperty Name="fecha_actualizacion" ColumnName="fecha_actualizacion" />
+                <ScalarProperty Name="veces_visualizado" ColumnName="veces_visualizado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Egresados">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Egresado">
+              <MappingFragment StoreEntitySet="Egresados">
+                <ScalarProperty Name="id_egresado" ColumnName="id_egresado" />
+                <ScalarProperty Name="numero_documento" ColumnName="numero_documento" />
+                <ScalarProperty Name="nombres" ColumnName="nombres" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="id_carrera" ColumnName="id_carrera" />
+                <ScalarProperty Name="fecha_graduacion" ColumnName="fecha_graduacion" />
+                <ScalarProperty Name="promedio_academico" ColumnName="promedio_academico" />
+                <ScalarProperty Name="consentimiento_datos" ColumnName="consentimiento_datos" />
+                <ScalarProperty Name="fecha_registro" ColumnName="fecha_registro" />
+                <ScalarProperty Name="estado_activo" ColumnName="estado_activo" />
+                <ScalarProperty Name="puntuacion_global" ColumnName="puntuacion_global" />
+                <ScalarProperty Name="total_estrellas" ColumnName="total_estrellas" />
+                <ScalarProperty Name="nivel_experiencia" ColumnName="nivel_experiencia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empresas">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Empresa">
+              <MappingFragment StoreEntitySet="Empresas">
+                <ScalarProperty Name="id_empresa" ColumnName="id_empresa" />
+                <ScalarProperty Name="razon_social" ColumnName="razon_social" />
+                <ScalarProperty Name="nit" ColumnName="nit" />
+                <ScalarProperty Name="email_contacto" ColumnName="email_contacto" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="sector_economico" ColumnName="sector_economico" />
+                <ScalarProperty Name="tamaño_empresa" ColumnName="tamaño_empresa" />
+                <ScalarProperty Name="vinculada_universidad" ColumnName="vinculada_universidad" />
+                <ScalarProperty Name="fecha_registro" ColumnName="fecha_registro" />
+                <ScalarProperty Name="estado_activo" ColumnName="estado_activo" />
+                <ScalarProperty Name="puntuacion_empresa" ColumnName="puntuacion_empresa" />
+                <ScalarProperty Name="total_contrataciones" ColumnName="total_contrataciones" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Encuestas_Base">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Encuestas_Base">
+              <MappingFragment StoreEntitySet="Encuestas_Base">
+                <ScalarProperty Name="id_encuesta" ColumnName="id_encuesta" />
+                <ScalarProperty Name="id_egresado" ColumnName="id_egresado" />
+                <ScalarProperty Name="trabajando_actualmente" ColumnName="trabajando_actualmente" />
+                <ScalarProperty Name="empresa_actual" ColumnName="empresa_actual" />
+                <ScalarProperty Name="cargo_actual" ColumnName="cargo_actual" />
+                <ScalarProperty Name="salario_rango" ColumnName="salario_rango" />
+                <ScalarProperty Name="modalidad_trabajo" ColumnName="modalidad_trabajo" />
+                <ScalarProperty Name="satisfaccion_trabajo" ColumnName="satisfaccion_trabajo" />
+                <ScalarProperty Name="usa_conocimientos_carrera" ColumnName="usa_conocimientos_carrera" />
+                <ScalarProperty Name="tiempo_conseguir_trabajo" ColumnName="tiempo_conseguir_trabajo" />
+                <ScalarProperty Name="fecha_encuesta" ColumnName="fecha_encuesta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Estrellas_Egresado">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Estrellas_Egresado">
+              <MappingFragment StoreEntitySet="Estrellas_Egresado">
+                <ScalarProperty Name="id_estrella" ColumnName="id_estrella" />
+                <ScalarProperty Name="id_egresado" ColumnName="id_egresado" />
+                <ScalarProperty Name="id_proceso" ColumnName="id_proceso" />
+                <ScalarProperty Name="estrella_numero" ColumnName="estrella_numero" />
+                <ScalarProperty Name="completada" ColumnName="completada" />
+                <ScalarProperty Name="puntuacion_obtenida" ColumnName="puntuacion_obtenida" />
+                <ScalarProperty Name="fecha_obtencion" ColumnName="fecha_obtencion" />
+                <ScalarProperty Name="fase_completada" ColumnName="fase_completada" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Evaluaciones_Proceso">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Evaluaciones_Proceso">
+              <MappingFragment StoreEntitySet="Evaluaciones_Proceso">
+                <ScalarProperty Name="id_evaluacion" ColumnName="id_evaluacion" />
+                <ScalarProperty Name="id_proceso" ColumnName="id_proceso" />
+                <ScalarProperty Name="fase_evaluacion" ColumnName="fase_evaluacion" />
+                <ScalarProperty Name="puntuacion" ColumnName="puntuacion" />
+                <ScalarProperty Name="puntuacion_maxima" ColumnName="puntuacion_maxima" />
+                <ScalarProperty Name="comentarios" ColumnName="comentarios" />
+                <ScalarProperty Name="evaluador" ColumnName="evaluador" />
+                <ScalarProperty Name="fecha_evaluacion" ColumnName="fecha_evaluacion" />
+                <ScalarProperty Name="completada" ColumnName="completada" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logs_Sistema">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Logs_Sistema">
+              <MappingFragment StoreEntitySet="Logs_Sistema">
+                <ScalarProperty Name="id_log" ColumnName="id_log" />
+                <ScalarProperty Name="usuario_tipo" ColumnName="usuario_tipo" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="accion" ColumnName="accion" />
+                <ScalarProperty Name="tabla_afectada" ColumnName="tabla_afectada" />
+                <ScalarProperty Name="id_registro" ColumnName="id_registro" />
+                <ScalarProperty Name="detalles" ColumnName="detalles" />
+                <ScalarProperty Name="ip_address" ColumnName="ip_address" />
+                <ScalarProperty Name="fecha_accion" ColumnName="fecha_accion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Matching_Config">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Matching_Config">
+              <MappingFragment StoreEntitySet="Matching_Config">
+                <ScalarProperty Name="id_config" ColumnName="id_config" />
+                <ScalarProperty Name="id_empresa" ColumnName="id_empresa" />
+                <ScalarProperty Name="peso_experiencia" ColumnName="peso_experiencia" />
+                <ScalarProperty Name="peso_habilidades" ColumnName="peso_habilidades" />
+                <ScalarProperty Name="peso_calificaciones" ColumnName="peso_calificaciones" />
+                <ScalarProperty Name="peso_carrera" ColumnName="peso_carrera" />
+                <ScalarProperty Name="peso_idiomas" ColumnName="peso_idiomas" />
+                <ScalarProperty Name="experiencia_minima" ColumnName="experiencia_minima" />
+                <ScalarProperty Name="carreras_preferidas" ColumnName="carreras_preferidas" />
+                <ScalarProperty Name="habilidades_requeridas" ColumnName="habilidades_requeridas" />
+                <ScalarProperty Name="fecha_configuracion" ColumnName="fecha_configuracion" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Matching_Resultados">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Matching_Resultados">
+              <MappingFragment StoreEntitySet="Matching_Resultados">
+                <ScalarProperty Name="id_matching" ColumnName="id_matching" />
+                <ScalarProperty Name="id_empresa" ColumnName="id_empresa" />
+                <ScalarProperty Name="id_egresado" ColumnName="id_egresado" />
+                <ScalarProperty Name="id_cv" ColumnName="id_cv" />
+                <ScalarProperty Name="puntuacion_match" ColumnName="puntuacion_match" />
+                <ScalarProperty Name="desglose_puntuacion" ColumnName="desglose_puntuacion" />
+                <ScalarProperty Name="fecha_calculo" ColumnName="fecha_calculo" />
+                <ScalarProperty Name="visualizado_empresa" ColumnName="visualizado_empresa" />
+                <ScalarProperty Name="fecha_visualizacion" ColumnName="fecha_visualizacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mentorias">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Mentoria">
+              <MappingFragment StoreEntitySet="Mentorias">
+                <ScalarProperty Name="id_mentoria" ColumnName="id_mentoria" />
+                <ScalarProperty Name="id_mentor" ColumnName="id_mentor" />
+                <ScalarProperty Name="id_mentee" ColumnName="id_mentee" />
+                <ScalarProperty Name="area_mentoria" ColumnName="area_mentoria" />
+                <ScalarProperty Name="estado_mentoria" ColumnName="estado_mentoria" />
+                <ScalarProperty Name="fecha_inicio" ColumnName="fecha_inicio" />
+                <ScalarProperty Name="fecha_fin" ColumnName="fecha_fin" />
+                <ScalarProperty Name="objetivos" ColumnName="objetivos" />
+                <ScalarProperty Name="progreso" ColumnName="progreso" />
+                <ScalarProperty Name="calificacion_mentor" ColumnName="calificacion_mentor" />
+                <ScalarProperty Name="calificacion_mentee" ColumnName="calificacion_mentee" />
+                <ScalarProperty Name="comentarios_finales" ColumnName="comentarios_finales" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notificaciones">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Notificacione">
+              <MappingFragment StoreEntitySet="Notificaciones">
+                <ScalarProperty Name="id_notificacion" ColumnName="id_notificacion" />
+                <ScalarProperty Name="destinatario_tipo" ColumnName="destinatario_tipo" />
+                <ScalarProperty Name="id_destinatario" ColumnName="id_destinatario" />
+                <ScalarProperty Name="tipo_notificacion" ColumnName="tipo_notificacion" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="mensaje" ColumnName="mensaje" />
+                <ScalarProperty Name="leida" ColumnName="leida" />
+                <ScalarProperty Name="email_enviado" ColumnName="email_enviado" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="fecha_lectura" ColumnName="fecha_lectura" />
+                <ScalarProperty Name="datos_adicionales" ColumnName="datos_adicionales" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Procesos_Seleccion">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Procesos_Seleccion">
+              <MappingFragment StoreEntitySet="Procesos_Seleccion">
+                <ScalarProperty Name="id_proceso" ColumnName="id_proceso" />
+                <ScalarProperty Name="id_empresa" ColumnName="id_empresa" />
+                <ScalarProperty Name="id_egresado" ColumnName="id_egresado" />
+                <ScalarProperty Name="id_cv" ColumnName="id_cv" />
+                <ScalarProperty Name="titulo_vacante" ColumnName="titulo_vacante" />
+                <ScalarProperty Name="descripcion_vacante" ColumnName="descripcion_vacante" />
+                <ScalarProperty Name="salario_ofrecido" ColumnName="salario_ofrecido" />
+                <ScalarProperty Name="modalidad" ColumnName="modalidad" />
+                <ScalarProperty Name="estado_proceso" ColumnName="estado_proceso" />
+                <ScalarProperty Name="fecha_inicio" ColumnName="fecha_inicio" />
+                <ScalarProperty Name="fecha_actualizacion" ColumnName="fecha_actualizacion" />
+                <ScalarProperty Name="fecha_finalizacion" ColumnName="fecha_finalizacion" />
+                <ScalarProperty Name="contratado" ColumnName="contratado" />
+                <ScalarProperty Name="observaciones" ColumnName="observaciones" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sesiones_Mentoria">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Sesiones_Mentoria">
+              <MappingFragment StoreEntitySet="Sesiones_Mentoria">
+                <ScalarProperty Name="id_sesion" ColumnName="id_sesion" />
+                <ScalarProperty Name="id_mentoria" ColumnName="id_mentoria" />
+                <ScalarProperty Name="fecha_sesion" ColumnName="fecha_sesion" />
+                <ScalarProperty Name="duracion_minutos" ColumnName="duracion_minutos" />
+                <ScalarProperty Name="modalidad" ColumnName="modalidad" />
+                <ScalarProperty Name="temas_tratados" ColumnName="temas_tratados" />
+                <ScalarProperty Name="proximos_pasos" ColumnName="proximos_pasos" />
+                <ScalarProperty Name="calificacion_sesion" ColumnName="calificacion_sesion" />
+                <ScalarProperty Name="completada" ColumnName="completada" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios_Empresa">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Usuarios_Empresa">
+              <MappingFragment StoreEntitySet="Usuarios_Empresa">
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="id_empresa" ColumnName="id_empresa" />
+                <ScalarProperty Name="nombre_usuario" ColumnName="nombre_usuario" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password_hash" ColumnName="password_hash" />
+                <ScalarProperty Name="nombre_completo" ColumnName="nombre_completo" />
+                <ScalarProperty Name="cargo" ColumnName="cargo" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VW_Dashboard_Egresados">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.VW_Dashboard_Egresados">
+              <MappingFragment StoreEntitySet="VW_Dashboard_Egresados">
+                <ScalarProperty Name="id_egresado" ColumnName="id_egresado" />
+                <ScalarProperty Name="nombre_completo" ColumnName="nombre_completo" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="nombre_carrera" ColumnName="nombre_carrera" />
+                <ScalarProperty Name="facultad" ColumnName="facultad" />
+                <ScalarProperty Name="fecha_graduacion" ColumnName="fecha_graduacion" />
+                <ScalarProperty Name="meses_desde_graduacion" ColumnName="meses_desde_graduacion" />
+                <ScalarProperty Name="puntuacion_global" ColumnName="puntuacion_global" />
+                <ScalarProperty Name="total_estrellas" ColumnName="total_estrellas" />
+                <ScalarProperty Name="nivel_experiencia" ColumnName="nivel_experiencia" />
+                <ScalarProperty Name="estado_laboral" ColumnName="estado_laboral" />
+                <ScalarProperty Name="total_aplicaciones" ColumnName="total_aplicaciones" />
+                <ScalarProperty Name="total_contrataciones" ColumnName="total_contrataciones" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VW_Estadisticas_Empresas">
+            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.VW_Estadisticas_Empresas">
+              <MappingFragment StoreEntitySet="VW_Estadisticas_Empresas">
+                <ScalarProperty Name="id_empresa" ColumnName="id_empresa" />
+                <ScalarProperty Name="razon_social" ColumnName="razon_social" />
+                <ScalarProperty Name="sector_economico" ColumnName="sector_economico" />
+                <ScalarProperty Name="puntuacion_empresa" ColumnName="puntuacion_empresa" />
+                <ScalarProperty Name="total_candidatos_evaluados" ColumnName="total_candidatos_evaluados" />
+                <ScalarProperty Name="total_contrataciones" ColumnName="total_contrataciones" />
+                <ScalarProperty Name="promedio_evaluacion_cv" ColumnName="promedio_evaluacion_cv" />
+                <ScalarProperty Name="promedio_evaluacion_tecnica" ColumnName="promedio_evaluacion_tecnica" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_CalcularMatching" FunctionName="SistemaEgresadosUtecModel.Store.SP_CalcularMatching" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
