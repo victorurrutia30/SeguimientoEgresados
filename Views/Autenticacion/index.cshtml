@@ -1,7 +1,179 @@
-﻿
-@{
-    ViewBag.Title = "index";
+﻿@{
+    ViewBag.Title = "Iniciar sesión";
+    // Oculta navbar y footer del layout en la pantalla de login
+    ViewBag.HideNavbar = true;
+    ViewBag.HideLayoutFooter = true;
 }
 
-<h2>index</h2>
+<style>
+    /* ====== Login minimal ====== */
+    .login-page {
+        position: relative;
+        min-height: 100vh;
+        background: center/cover no-repeat fixed;
+    }
+    /* Dales su imagen de fondo: Utec.jpg */
+    .login-page[data-bg] {
+        background-image: url('@Url.Content("~/Content/images/Utec.jpg")');
+    }
+    /* Oscurecido / transparencia del fondo */
+    .login-page::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.35));
+        backdrop-filter: blur(1.5px);
+        z-index: 1;
+    }
 
+    .login-wrap {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 440px;
+        background: rgba(255,255,255,.9);
+        border: 1px solid rgba(255,255,255,.7);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,.25);
+        overflow: hidden;
+    }
+
+    .login-card .top {
+        padding: 28px 28px 12px 28px;
+        text-align: center;
+    }
+
+    .login-logo {
+        height: 72px;
+        width: auto;
+        object-fit: contain;
+        display: inline-block;
+        filter: drop-shadow(0 6px 18px rgba(0,0,0,.25));
+    }
+
+    .login-card .body {
+        padding: 0 28px 28px 28px;
+    }
+
+    .subtitle {
+        color: #6c757d;
+        font-size: .95rem;
+        margin-top: 12px;
+        margin-bottom: 0;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #343a40;
+    }
+
+    .form-control.form-control-lg {
+        border-radius: 14px;
+        padding: 12px 16px;
+        border: 1px solid #dee2e6;
+        transition: box-shadow .2s ease, border-color .2s ease, transform .05s ease;
+        background: #fff;
+    }
+    .form-control.form-control-lg:focus {
+        border-color: #5D0A28;                   /* tono institucional */
+        box-shadow: 0 0 0 .25rem rgba(93,10,40,.15);
+        transform: translateY(-1px);
+    }
+
+    .btn.btn-primary.btn-lg {
+        border-radius: 14px;
+        padding: 12px 18px;
+        font-weight: 700;
+        letter-spacing: .2px;
+    }
+
+    .aux-links a {
+        text-decoration: none;
+    }
+    .aux-links a:hover {
+        text-decoration: underline;
+    }
+
+    .divider {
+        height: 1px;
+        background: rgba(0,0,0,.06);
+        margin: 20px 0;
+    }
+
+    .small-muted {
+        color: #6c757d;
+        font-size: .9rem;
+    }
+</style>
+
+<div class="login-page" data-bg>
+    <div class="login-wrap">
+        <div class="login-card">
+            <div class="top">
+                <!-- Tu logo: logoU.png -->
+                <img src="@Url.Content("~/Content/images/logoU.png")" alt="UTEC" class="login-logo" />
+                <p class="subtitle">Bienvenido(a). Ingresa con tu correo y contraseña.</p>
+            </div>
+
+            <div class="body">
+                @* Mensaje de error del controlador *@
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger mb-3" role="alert">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                @using (Html.BeginForm("Index", "Autenticacion", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                {
+                    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo</label>
+                        <input type="email"
+                               class="form-control form-control-lg"
+                               id="email"
+                               name="email"
+                               placeholder="tucorreo@utec.edu.sv"
+                               required />
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password"
+                               class="form-control form-control-lg"
+                               id="password"
+                               name="password"
+                               placeholder="••••••••"
+                               required />
+                    </div>
+
+                    <div class="d-flex justify-content-end aux-links mb-4">
+                        <a href="#" class="small">¿Olvidaste tu contraseña?</a>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            Iniciar sesión
+                        </button>
+                    </div>
+                }
+
+                <div class="divider"></div>
+
+                <div class="text-center">
+                    <span class="small-muted">¿Aún no tienes cuenta?</span>
+                    <a class="ms-1" href="@Url.Action("Index","Registro")">Regístrate</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
