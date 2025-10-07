@@ -122,7 +122,7 @@ namespace SeguimientoEgresados.Servicios
                     cargo_actual = cargoActual,
                     salario_rango = rangoSalarial,
                     modalidad_trabajo = modalidadTrabajo,
-                    satisfaccion_trabajo = satisfaccionTrabajo,
+                    satisfaccion_trabajo = (byte?)satisfaccionTrabajo,
                     usa_conocimientos_carrera = usaConocimientosCarrera,
                     tiempo_conseguir_trabajo = tiempoConseguirTrabajo,
                     fecha_encuesta = DateTime.Now

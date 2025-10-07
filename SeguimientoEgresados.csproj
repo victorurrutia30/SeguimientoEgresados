@@ -146,8 +146,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AutenticacionController.cs" />
+    <Compile Include="Controllers\DashboardsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RegistroController.cs" />
+    <Compile Include="Controllers\UtilController.cs" />
     <Compile Include="DTO\Resultado.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -296,6 +298,9 @@
     <Content Include="Views\index.cshtml" />
     <Content Include="Views\Autenticacion\View.cshtml" />
     <Content Include="Views\Autenticacion\index.cshtml" />
+    <Content Include="Views\Dashboards\Admin.cshtml" />
+    <Content Include="Views\Dashboards\Egresado.cshtml" />
+    <Content Include="Views\Dashboards\Empresa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

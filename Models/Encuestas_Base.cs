@@ -21,7 +21,7 @@ namespace SeguimientoEgresados.Models
         public string cargo_actual { get; set; }
         public string salario_rango { get; set; }
         public string modalidad_trabajo { get; set; }
-        public Nullable<int> satisfaccion_trabajo { get; set; }
+        public Nullable<byte> satisfaccion_trabajo { get; set; }
         public Nullable<bool> usa_conocimientos_carrera { get; set; }
         public Nullable<int> tiempo_conseguir_trabajo { get; set; }
         public Nullable<System.DateTime> fecha_encuesta { get; set; }

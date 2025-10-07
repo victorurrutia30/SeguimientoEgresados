@@ -77,14 +77,11 @@ namespace SeguimientoEgresados.Controllers
                 switch (rol)
                 {
                     case "Admin":
-                        // TODO: cuando tengas tu dashboard admin
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Admin", "Dashboards");
                     case "Egresado":
-                        // TODO: dashboard de egresado
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Egresado", "Dashboards");
                     case "Empresa":
-                        // TODO: dashboard de empresa
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Empresa", "Dashboards");
                     default:
                         return RedirectToAction("Index", "Home");
                 }

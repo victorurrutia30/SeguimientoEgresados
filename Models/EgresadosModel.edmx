@@ -741,8 +741,8 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
           <Property Name="cargo_actual" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="salario_rango" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="modalidad_trabajo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="satisfaccion_trabajo" Type="Int32" />
-          <Property Name="usa_conocimientos_carrera" Type="Boolean" />
+			<Property Name="satisfaccion_trabajo" Type="Byte" Nullable="true" />
+			<Property Name="usa_conocimientos_carrera" Type="Boolean" />
           <Property Name="tiempo_conseguir_trabajo" Type="Int32" />
           <Property Name="fecha_encuesta" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Egresado" Relationship="Self.FK_EncuestasBase_Egresados" FromRole="Encuestas_Base" ToRole="Egresados" />
