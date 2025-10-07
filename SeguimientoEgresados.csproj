@@ -301,6 +301,7 @@
     <Content Include="Views\Dashboards\Admin.cshtml" />
     <Content Include="Views\Dashboards\Egresado.cshtml" />
     <Content Include="Views\Dashboards\Empresa.cshtml" />
+    <Content Include="Views\Registro\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
