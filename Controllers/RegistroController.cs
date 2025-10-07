@@ -9,6 +9,7 @@ namespace SeguimientoEgresados.Controllers
     public class RegistroController : Controller
     {        
         private readonly Servicios.Registro _servicioRegistro = new Servicios.Registro();
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();

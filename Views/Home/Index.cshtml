@@ -1,33 +1,115 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    // Título de la página y bandera para ocultar el footer pequeño del _Layout
+    ViewBag.Title = "Home";
+    ViewBag.HideLayoutFooter = true;
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
-
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+<!-- HEADER del homepage (solo visual, no reemplaza la navbar del Layout) -->
+<header class="home-header">
+    <div class="header-container">
+        <!-- Logo: referencia con Url.Content para que funcione en cualquier entorno -->
+        <img src="@Url.Content("~/Content/images/logo-utec.png")" alt="UTEC" class="logo" />
     </div>
-</main>
+</header>
+
+<!-- Barra de bienvenida -->
+<section class="md_1">
+    <h2>Bienvenidos</h2>
+</section>
+
+<!-- HERO -->
+<section class="hero-banner">
+    <img src="@Url.Content("~/Content/images/IMG_P.png")" alt="Banner principal" class="hero-image" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">Tu Red Profesional de Éxito</h1>
+        <p class="hero-subtitle">
+            Vuelve a conectar con tus compañeros, explora oportunidades laborales y sigue impulsando tu carrera.
+        </p>
+
+        <!-- Botones acción: ya con rutas MVC -->
+        <div class="hero-buttons">
+            <a class="btn btn-primary" href="@Url.Action("Index","Autenticacion")">Iniciar Sesion</a>
+            <a class="btn btn-secondary" href="@Url.Action("Index","Registro")">Registrate</a>
+        </div>
+    </div>
+</section>
+
+<!-- Línea divisoria del color institucional -->
+<div class="md_2"></div>
+
+<!-- TARJETAS -->
+<section class="cards-section">
+    <div class="container">
+        <div class="cards-grid">
+            <!-- Card 1 -->
+            <article class="card">
+                <img src="@Url.Content("~/Content/images/IMG1.jpg")" alt="Mantente Conectado" class="card-image" />
+                <div class="card-content">
+                    <h2 class="card-title">Mantente Conectado</h2>
+                    <p class="card-description">
+                        El objetivo principal es que los egresados se sientan parte de una comunidad profesional activa.
+                    </p>
+                </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="card">
+                <img src="@Url.Content("~/Content/images/IMG2.jpg")" alt="Oportunidades Profesionales" class="card-image" />
+                <div class="card-content">
+                    <h2 class="card-title">Oportunidades Profesionales</h2>
+                    <p class="card-description">
+                        Ofrecer valor tangible que les ayude a avanzar en su carrera.
+                    </p>
+                </div>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="card">
+                <img src="@Url.Content("~/Content/images/IMG3.jpg")" alt="Apoya a tu Alma Máter" class="card-image" />
+                <div class="card-content">
+                    <h2 class="card-title">Apoya a tu Alma Máter</h2>
+                    <p class="card-description">
+                        Para motivar a los egresados a contribuir al desarrollo de la universidad.
+                    </p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER grande del homepage (distinto al del Layout) -->
+<section class="home-footer">
+    <div class="footer-content">
+        <div class="footer-title">UTEC VIRTUAL</div>
+        <div class="footer-info">
+            <p>Universidad Tecnológica de El Salvador</p>
+            <p>Calle Arce 17 avenida Norte, edificio José Martí 2da. planta,</p>
+            <p>San Salvador, El Salvador, CA.</p>
+            <p>Tel. 2275-8888 ext. 8816, 8723, 8702</p>
+        </div>
+
+        <!-- Redes sociales: SVGs inline (no dependemos de Font Awesome) -->
+        <div class="footer-social">
+            <!-- Facebook -->
+            <a class="social-icon" href="https://www.facebook.com/universidadtecnologica/" aria-label="Facebook">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                    <path d="M22 12.07C22 6.48 17.52 2 11.93 2 6.35 2 1.87 6.48 1.87 12.07c0 4.97 3.63 9.1 8.38 9.94v-7.03H7.9v-2.9h2.35V9.41c0-2.33 1.38-3.62 3.49-3.62.99 0 2.02.18 2.02.18v2.22h-1.14c-1.12 0-1.47.7-1.47 1.42v1.7h2.5l-.4 2.9h-2.1V22c4.75-.84 8.38-4.97 8.38-9.94z" />
+                </svg>
+            </a>
+            <!-- X/Twitter (ya tenías SVG) -->
+            <a class="social-icon" href="https://x.com/UTECedusv" aria-label="X">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+            </a>
+            <!-- Instagram -->
+            <a class="social-icon" href="https://www.instagram.com/utecelsalvador/" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.9.2 2.6.5.7.3 1.2.7 1.7 1.2.5.5.9 1 1.2 1.7.3.7.4 1.4.5 2.6.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.9-.5 2.6a4.7 4.7 0 0 1-2.9 2.9c-.7.3-1.4.4-2.6.5-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.9-.2-2.6-.5a4.7 4.7 0 0 1-2.9-2.9c-.3-.7-.4-1.4-.5-2.6C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.2-1.9.5-2.6.3-.7.7-1.2 1.2-1.7.5-.5 1-.9 1.7-1.2.7-.3 1.4-.4 2.6-.5C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.8.1-1 0-1.6.2-2 .4-.5.2-.8.4-1.1.7-.3.3-.5.6-.7 1.1-.2.4-.3 1-.4 2 0 1.3-.1 1.7-.1 4.8s0 3.5.1 4.8c0 1 .2 1.6.4 2 .2.5.4.8.7 1.1.3.3.6.5 1.1.7.4.2 1 .3 2 .4 1.3 0 1.7.1 4.8.1s3.5 0 4.8-.1c1 0 1.6-.2 2-.4.5-.2.8-.4 1.1-.7.3-.3.5-.6.7-1.1.2-.4.3-1 .4-2 0-1.3.1-1.7.1-4.8s0-3.5-.1-4.8c0-1-.2-1.6-.4-2a3 3 0 0 0-1.8-1.8c-.4-.2-1-.3-2-.4-1.3 0-1.7-.1-4.8-.1Zm0 3.1a6.9 6.9 0 1 1 0 13.8 6.9 6.9 0 0 1 0-13.8Zm0 1.8a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2Zm5-2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z" />
+                </svg>
+            </a>
+           
+        </div>
+    </div>
+</section>

@@ -28,9 +28,13 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
-        </footer>
+        @* Mostrar el footer del layout solo si la vista NO lo oculta *@
+        @if (ViewBag.HideLayoutFooter == null || ViewBag.HideLayoutFooter == false)
+        {
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+            </footer>
+        }
     </div>
 
     @Scripts.Render("~/bundles/jquery")

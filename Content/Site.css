@@ -1,20 +1,318 @@
-﻿/* Set padding to keep content from hitting the edges */
-.body-content {
-    margin-top: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
+﻿/* ================================
+   HOME (Views/Home/Index.cshtml)
+   ================================ */
+
+/* Fuente sugerida (opcional). Si no quieres depender de Google Fonts, comenta la línea. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+/* Paleta */
+:root {
+    --utec-primary: #5D0A28;
+    --utec-primary-2: #8B1540;
+    --utec-text-dark: #343A40;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+/* Header propio del home (NO afecta la navbar del layout) */
+.home-header {
+    background: #F8F9FA;
+    padding: 20px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+    .home-header .header-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .home-header .logo {
+        height: 100px;
+        width: auto;
+        transition: transform .3s ease;
+    }
+
+        .home-header .logo:hover {
+            transform: scale(1.05);
+        }
+
+/* Barras institucionales */
+.md_1 {
+    height: 60px;
+    background-color: var(--utec-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .md_1 h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin: 0;
+        letter-spacing: 1px;
+    }
+
+.md_2 {
+    height: 20px;
+    background-color: var(--utec-primary);
+    color: #fff;
+}
+
+/* HERO */
+.hero-banner {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* ocupa alto de pantalla */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transition: transform 10s ease-out;
+}
+
+.hero-banner:hover .hero-image {
+    transform: scale(1.05);
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(93,10,40,.6), rgba(93,10,40,.3));
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    color: #fff;
+    max-width: 900px;
+    padding: 0 20px;
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,.5);
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    font-weight: 300;
+    text-shadow: 1px 1px 3px rgba(0,0,0,.5);
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Botones (extiende Bootstrap) */
+.btn.btn-primary {
+    background: linear-gradient(135deg, var(--utec-primary) 0%, var(--utec-primary-2) 100%);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 40px;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(93,10,40,.4);
+    transition: all .3s ease;
+}
+
+    .btn.btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(93,10,40,.6);
+    }
+
+.btn.btn-secondary {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 50px;
+    padding: 15px 40px;
+    font-weight: 600;
+    transition: all .3s ease;
+}
+
+    .btn.btn-secondary:hover {
+        background: #fff;
+        color: var(--utec-text-dark);
+        transform: translateY(-3px);
+    }
+
+/* Keyframes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tarjetas */
+.cards-section {
+    padding: 60px 20px;
+    background: #f5f5f5;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0,0,0,.3);
+    }
+
+.card-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 4px solid var(--utec-primary);
+}
+
+.card-content {
+    padding: 25px;
+}
+
+.card-title {
+    color: var(--utec-primary);
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.card-description {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Footer grande del home (no afecta el del layout) */
+.home-footer {
+    background: linear-gradient(135deg, var(--utec-primary) 0%, var(--utec-primary-2) 100%);
+    color: #fff;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+    .home-footer .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .home-footer .footer-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .home-footer .footer-info p {
+        margin: 10px 0;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        color: rgba(255,255,255,.9);
+    }
+
+    .home-footer .footer-social {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .home-footer .social-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        text-decoration: none;
+        transition: all .3s ease;
+        background: rgba(255,255,255,.2);
+        backdrop-filter: blur(10px);
+    }
+
+        .home-footer .social-icon:hover {
+            background: #fff;
+            color: var(--utec-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,.3);
+        }
+
+/* Responsivo */
+@media (max-width: 992px) {
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+
+    .btn.btn-primary, .btn.btn-secondary {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .home-header .logo {
+        height: 80px;
+    }
+
+    .home-footer .footer-title {
+        font-size: 1.5rem;
+    }
+
+    .home-footer .footer-info p {
+        font-size: .95rem;
+    }
 }

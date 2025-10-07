@@ -8,6 +8,8 @@ namespace SeguimientoEgresados
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new AuthorizeAttribute()); // exige login por defecto
+
         }
     }
 }

@@ -13,6 +13,7 @@ namespace SeguimientoEgresados.Controllers
         private readonly AuthService _auth = new AuthService();
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Index(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
