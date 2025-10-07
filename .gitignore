@@ -1,25 +1,32 @@
-# Visual Studio
+# Visual Studio / .NET
 .vs/
-bin/
-obj/
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
 
-# Rider / JetBrains
+# Build results
+bin/
+obj/
+Debug/
+Release/
+
+# IDEs
 .idea/
+.vscode/
 
-# NuGet
-*.nupkg
+# NuGet / packages
 packages/
+*.nupkg
+project.lock.json
 
-# OS
-Thumbs.db
-Desktop.ini
-
-# Logs
+# Logs / DB / test output
 *.log
+TestResults/
+*.mdf
+*.ldf
 
-# Others
-*.zip
+# Misc
+*.cache
+*.tmp
+*.userprefs

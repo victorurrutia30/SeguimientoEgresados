@@ -21,8 +21,6 @@ namespace SeguimientoEgresados.Models
             this.Encuestas_Base = new HashSet<Encuestas_Base>();
             this.Estrellas_Egresado = new HashSet<Estrellas_Egresado>();
             this.Matching_Resultados = new HashSet<Matching_Resultados>();
-            this.Mentorias = new HashSet<Mentoria>();
-            this.Mentorias1 = new HashSet<Mentoria>();
             this.Procesos_Seleccion = new HashSet<Procesos_Seleccion>();
         }
     
@@ -41,6 +39,7 @@ namespace SeguimientoEgresados.Models
         public Nullable<decimal> puntuacion_global { get; set; }
         public Nullable<int> total_estrellas { get; set; }
         public string nivel_experiencia { get; set; }
+        public string password_hash { get; set; }
     
         public virtual Carrera Carrera { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -51,10 +50,6 @@ namespace SeguimientoEgresados.Models
         public virtual ICollection<Estrellas_Egresado> Estrellas_Egresado { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Matching_Resultados> Matching_Resultados { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Mentoria> Mentorias { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Mentoria> Mentorias1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Procesos_Seleccion> Procesos_Seleccion { get; set; }
     }

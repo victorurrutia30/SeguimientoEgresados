@@ -38,10 +38,8 @@ namespace SeguimientoEgresados.Models
         public virtual DbSet<Logs_Sistema> Logs_Sistema { get; set; }
         public virtual DbSet<Matching_Config> Matching_Config { get; set; }
         public virtual DbSet<Matching_Resultados> Matching_Resultados { get; set; }
-        public virtual DbSet<Mentoria> Mentorias { get; set; }
         public virtual DbSet<Notificacione> Notificaciones { get; set; }
         public virtual DbSet<Procesos_Seleccion> Procesos_Seleccion { get; set; }
-        public virtual DbSet<Sesiones_Mentoria> Sesiones_Mentoria { get; set; }
         public virtual DbSet<Usuarios_Empresa> Usuarios_Empresa { get; set; }
         public virtual DbSet<VW_Dashboard_Egresados> VW_Dashboard_Egresados { get; set; }
         public virtual DbSet<VW_Estadisticas_Empresas> VW_Estadisticas_Empresas { get; set; }

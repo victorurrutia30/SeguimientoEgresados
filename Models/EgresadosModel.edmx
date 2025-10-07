@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SistemaEgresadosUtecModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SistemaEgresadosUtecModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Administradores">
           <Key>
             <PropertyRef Name="id_admin" />
@@ -67,6 +67,7 @@
           <Property Name="puntuacion_global" Type="decimal" Precision="4" Scale="2" />
           <Property Name="total_estrellas" Type="int" />
           <Property Name="nivel_experiencia" Type="nvarchar" MaxLength="20" />
+          <Property Name="password_hash" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Empresas">
           <Key>
@@ -174,23 +175,6 @@
           <Property Name="visualizado_empresa" Type="bit" />
           <Property Name="fecha_visualizacion" Type="datetime2" Precision="7" />
         </EntityType>
-        <EntityType Name="Mentorias">
-          <Key>
-            <PropertyRef Name="id_mentoria" />
-          </Key>
-          <Property Name="id_mentoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="id_mentor" Type="int" Nullable="false" />
-          <Property Name="id_mentee" Type="int" Nullable="false" />
-          <Property Name="area_mentoria" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="estado_mentoria" Type="nvarchar" MaxLength="20" />
-          <Property Name="fecha_inicio" Type="datetime2" Precision="7" />
-          <Property Name="fecha_fin" Type="datetime2" Precision="7" />
-          <Property Name="objetivos" Type="nvarchar(max)" />
-          <Property Name="progreso" Type="nvarchar(max)" />
-          <Property Name="calificacion_mentor" Type="int" />
-          <Property Name="calificacion_mentee" Type="int" />
-          <Property Name="comentarios_finales" Type="nvarchar(max)" />
-        </EntityType>
         <EntityType Name="Notificaciones">
           <Key>
             <PropertyRef Name="id_notificacion" />
@@ -225,20 +209,6 @@
           <Property Name="fecha_finalizacion" Type="datetime2" Precision="7" />
           <Property Name="contratado" Type="bit" />
           <Property Name="observaciones" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="Sesiones_Mentoria">
-          <Key>
-            <PropertyRef Name="id_sesion" />
-          </Key>
-          <Property Name="id_sesion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="id_mentoria" Type="int" Nullable="false" />
-          <Property Name="fecha_sesion" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="duracion_minutos" Type="int" Nullable="false" />
-          <Property Name="modalidad" Type="nvarchar" MaxLength="20" />
-          <Property Name="temas_tratados" Type="nvarchar(max)" />
-          <Property Name="proximos_pasos" Type="nvarchar(max)" />
-          <Property Name="calificacion_sesion" Type="int" />
-          <Property Name="completada" Type="bit" />
         </EntityType>
         <EntityType Name="Usuarios_Empresa">
           <Key>
@@ -416,30 +386,6 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Mentorias_Mentee">
-          <End Role="Egresados" Type="Self.Egresados" Multiplicity="1" />
-          <End Role="Mentorias" Type="Self.Mentorias" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Egresados">
-              <PropertyRef Name="id_egresado" />
-            </Principal>
-            <Dependent Role="Mentorias">
-              <PropertyRef Name="id_mentee" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Mentorias_Mentor">
-          <End Role="Egresados" Type="Self.Egresados" Multiplicity="1" />
-          <End Role="Mentorias" Type="Self.Mentorias" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Egresados">
-              <PropertyRef Name="id_egresado" />
-            </Principal>
-            <Dependent Role="Mentorias">
-              <PropertyRef Name="id_mentor" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ProcesosSeleccion_CVs">
           <End Role="CVs_Egresados" Type="Self.CVs_Egresados" Multiplicity="1" />
           <End Role="Procesos_Seleccion" Type="Self.Procesos_Seleccion" Multiplicity="*" />
@@ -476,18 +422,6 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SesionesMentoria_Mentorias">
-          <End Role="Mentorias" Type="Self.Mentorias" Multiplicity="1" />
-          <End Role="Sesiones_Mentoria" Type="Self.Sesiones_Mentoria" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Mentorias">
-              <PropertyRef Name="id_mentoria" />
-            </Principal>
-            <Dependent Role="Sesiones_Mentoria">
-              <PropertyRef Name="id_mentoria" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UsuariosEmpresa_Empresas">
           <End Role="Empresas" Type="Self.Empresas" Multiplicity="1" />
           <End Role="Usuarios_Empresa" Type="Self.Usuarios_Empresa" Multiplicity="*" />
@@ -516,10 +450,8 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
           <EntitySet Name="Logs_Sistema" EntityType="Self.Logs_Sistema" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Matching_Config" EntityType="Self.Matching_Config" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Matching_Resultados" EntityType="Self.Matching_Resultados" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Mentorias" EntityType="Self.Mentorias" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notificaciones" EntityType="Self.Notificaciones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Procesos_Seleccion" EntityType="Self.Procesos_Seleccion" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Sesiones_Mentoria" EntityType="Self.Sesiones_Mentoria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios_Empresa" EntityType="Self.Usuarios_Empresa" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VW_Dashboard_Egresados" EntityType="Self.VW_Dashboard_Egresados" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -590,14 +522,6 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
             <End Role="Empresas" EntitySet="Empresas" />
             <End Role="Matching_Resultados" EntitySet="Matching_Resultados" />
           </AssociationSet>
-          <AssociationSet Name="FK_Mentorias_Mentee" Association="Self.FK_Mentorias_Mentee">
-            <End Role="Egresados" EntitySet="Egresados" />
-            <End Role="Mentorias" EntitySet="Mentorias" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Mentorias_Mentor" Association="Self.FK_Mentorias_Mentor">
-            <End Role="Egresados" EntitySet="Egresados" />
-            <End Role="Mentorias" EntitySet="Mentorias" />
-          </AssociationSet>
           <AssociationSet Name="FK_ProcesosSeleccion_CVs" Association="Self.FK_ProcesosSeleccion_CVs">
             <End Role="CVs_Egresados" EntitySet="CVs_Egresados" />
             <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
@@ -610,17 +534,12 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
             <End Role="Empresas" EntitySet="Empresas" />
             <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
           </AssociationSet>
-          <AssociationSet Name="FK_SesionesMentoria_Mentorias" Association="Self.FK_SesionesMentoria_Mentorias">
-            <End Role="Mentorias" EntitySet="Mentorias" />
-            <End Role="Sesiones_Mentoria" EntitySet="Sesiones_Mentoria" />
-          </AssociationSet>
           <AssociationSet Name="FK_UsuariosEmpresa_Empresas" Association="Self.FK_UsuariosEmpresa_Empresas">
             <End Role="Empresas" EntitySet="Empresas" />
             <End Role="Usuarios_Empresa" EntitySet="Usuarios_Empresa" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SistemaEgresadosUtecModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -695,9 +614,8 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
           <NavigationProperty Name="Encuestas_Base" Relationship="Self.FK_EncuestasBase_Egresados" FromRole="Egresados" ToRole="Encuestas_Base" />
           <NavigationProperty Name="Estrellas_Egresado" Relationship="Self.FK_Estrellas_Egresados" FromRole="Egresados" ToRole="Estrellas_Egresado" />
           <NavigationProperty Name="Matching_Resultados" Relationship="Self.FK_MatchingResultados_Egresados" FromRole="Egresados" ToRole="Matching_Resultados" />
-          <NavigationProperty Name="Mentorias" Relationship="Self.FK_Mentorias_Mentee" FromRole="Egresados" ToRole="Mentorias" />
-          <NavigationProperty Name="Mentorias1" Relationship="Self.FK_Mentorias_Mentor" FromRole="Egresados" ToRole="Mentorias" />
           <NavigationProperty Name="Procesos_Seleccion" Relationship="Self.FK_ProcesosSeleccion_Egresados" FromRole="Egresados" ToRole="Procesos_Seleccion" />
+          <Property Name="password_hash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Empresa">
           <Key>
@@ -817,26 +735,6 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
           <NavigationProperty Name="Egresado" Relationship="Self.FK_MatchingResultados_Egresados" FromRole="Matching_Resultados" ToRole="Egresados" />
           <NavigationProperty Name="Empresa" Relationship="Self.FK_MatchingResultados_Empresas" FromRole="Matching_Resultados" ToRole="Empresas" />
         </EntityType>
-        <EntityType Name="Mentoria">
-          <Key>
-            <PropertyRef Name="id_mentoria" />
-          </Key>
-          <Property Name="id_mentoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_mentor" Type="Int32" Nullable="false" />
-          <Property Name="id_mentee" Type="Int32" Nullable="false" />
-          <Property Name="area_mentoria" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="estado_mentoria" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="fecha_inicio" Type="DateTime" Precision="7" />
-          <Property Name="fecha_fin" Type="DateTime" Precision="7" />
-          <Property Name="objetivos" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="progreso" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="calificacion_mentor" Type="Int32" />
-          <Property Name="calificacion_mentee" Type="Int32" />
-          <Property Name="comentarios_finales" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Egresado" Relationship="Self.FK_Mentorias_Mentee" FromRole="Mentorias" ToRole="Egresados" />
-          <NavigationProperty Name="Egresado1" Relationship="Self.FK_Mentorias_Mentor" FromRole="Mentorias" ToRole="Egresados" />
-          <NavigationProperty Name="Sesiones_Mentoria" Relationship="Self.FK_SesionesMentoria_Mentorias" FromRole="Mentorias" ToRole="Sesiones_Mentoria" />
-        </EntityType>
         <EntityType Name="Notificacione">
           <Key>
             <PropertyRef Name="id_notificacion" />
@@ -876,21 +774,6 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
           <NavigationProperty Name="Empresa" Relationship="Self.FK_ProcesosSeleccion_Empresas" FromRole="Procesos_Seleccion" ToRole="Empresas" />
           <NavigationProperty Name="Estrellas_Egresado" Relationship="Self.FK_Estrellas_Procesos" FromRole="Procesos_Seleccion" ToRole="Estrellas_Egresado" />
           <NavigationProperty Name="Evaluaciones_Proceso" Relationship="Self.FK_EvaluacionesProceso_Procesos" FromRole="Procesos_Seleccion" ToRole="Evaluaciones_Proceso" />
-        </EntityType>
-        <EntityType Name="Sesiones_Mentoria">
-          <Key>
-            <PropertyRef Name="id_sesion" />
-          </Key>
-          <Property Name="id_sesion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_mentoria" Type="Int32" Nullable="false" />
-          <Property Name="fecha_sesion" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="duracion_minutos" Type="Int32" Nullable="false" />
-          <Property Name="modalidad" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="temas_tratados" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="proximos_pasos" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="calificacion_sesion" Type="Int32" />
-          <Property Name="completada" Type="Boolean" />
-          <NavigationProperty Name="Mentoria" Relationship="Self.FK_SesionesMentoria_Mentorias" FromRole="Sesiones_Mentoria" ToRole="Mentorias" />
         </EntityType>
         <EntityType Name="Usuarios_Empresa">
           <Key>
@@ -1029,30 +912,6 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Mentorias_Mentee">
-          <End Role="Egresados" Type="Self.Egresado" Multiplicity="1" />
-          <End Role="Mentorias" Type="Self.Mentoria" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Egresados">
-              <PropertyRef Name="id_egresado" />
-            </Principal>
-            <Dependent Role="Mentorias">
-              <PropertyRef Name="id_mentee" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Mentorias_Mentor">
-          <End Role="Egresados" Type="Self.Egresado" Multiplicity="1" />
-          <End Role="Mentorias" Type="Self.Mentoria" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Egresados">
-              <PropertyRef Name="id_egresado" />
-            </Principal>
-            <Dependent Role="Mentorias">
-              <PropertyRef Name="id_mentor" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ProcesosSeleccion_Egresados">
           <End Role="Egresados" Type="Self.Egresado" Multiplicity="1" />
           <End Role="Procesos_Seleccion" Type="Self.Procesos_Seleccion" Multiplicity="*" />
@@ -1137,18 +996,6 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SesionesMentoria_Mentorias">
-          <End Role="Mentorias" Type="Self.Mentoria" Multiplicity="1" />
-          <End Role="Sesiones_Mentoria" Type="Self.Sesiones_Mentoria" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Mentorias">
-              <PropertyRef Name="id_mentoria" />
-            </Principal>
-            <Dependent Role="Sesiones_Mentoria">
-              <PropertyRef Name="id_mentoria" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="SistemaEgresadosUtecEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Administradores" EntityType="Self.Administradore" />
           <EntitySet Name="Carreras" EntityType="Self.Carrera" />
@@ -1161,10 +1008,8 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
           <EntitySet Name="Logs_Sistema" EntityType="Self.Logs_Sistema" />
           <EntitySet Name="Matching_Config" EntityType="Self.Matching_Config" />
           <EntitySet Name="Matching_Resultados" EntityType="Self.Matching_Resultados" />
-          <EntitySet Name="Mentorias" EntityType="Self.Mentoria" />
           <EntitySet Name="Notificaciones" EntityType="Self.Notificacione" />
           <EntitySet Name="Procesos_Seleccion" EntityType="Self.Procesos_Seleccion" />
-          <EntitySet Name="Sesiones_Mentoria" EntityType="Self.Sesiones_Mentoria" />
           <EntitySet Name="Usuarios_Empresa" EntityType="Self.Usuarios_Empresa" />
           <EntitySet Name="VW_Dashboard_Egresados" EntityType="Self.VW_Dashboard_Egresados" />
           <EntitySet Name="VW_Estadisticas_Empresas" EntityType="Self.VW_Estadisticas_Empresas" />
@@ -1196,14 +1041,6 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
             <End Role="Egresados" EntitySet="Egresados" />
             <End Role="Matching_Resultados" EntitySet="Matching_Resultados" />
           </AssociationSet>
-          <AssociationSet Name="FK_Mentorias_Mentee" Association="Self.FK_Mentorias_Mentee">
-            <End Role="Egresados" EntitySet="Egresados" />
-            <End Role="Mentorias" EntitySet="Mentorias" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Mentorias_Mentor" Association="Self.FK_Mentorias_Mentor">
-            <End Role="Egresados" EntitySet="Egresados" />
-            <End Role="Mentorias" EntitySet="Mentorias" />
-          </AssociationSet>
           <AssociationSet Name="FK_ProcesosSeleccion_Egresados" Association="Self.FK_ProcesosSeleccion_Egresados">
             <End Role="Egresados" EntitySet="Egresados" />
             <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
@@ -1231,10 +1068,6 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
           <AssociationSet Name="FK_EvaluacionesProceso_Procesos" Association="Self.FK_EvaluacionesProceso_Procesos">
             <End Role="Procesos_Seleccion" EntitySet="Procesos_Seleccion" />
             <End Role="Evaluaciones_Proceso" EntitySet="Evaluaciones_Proceso" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SesionesMentoria_Mentorias" Association="Self.FK_SesionesMentoria_Mentorias">
-            <End Role="Mentorias" EntitySet="Mentorias" />
-            <End Role="Sesiones_Mentoria" EntitySet="Sesiones_Mentoria" />
           </AssociationSet>
           <FunctionImport Name="SP_CalcularMatching">
             <Parameter Name="id_empresa" Mode="In" Type="Int32" />
@@ -1296,6 +1129,7 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
           <EntitySetMapping Name="Egresados">
             <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Egresado">
               <MappingFragment StoreEntitySet="Egresados">
+                <ScalarProperty Name="password_hash" ColumnName="password_hash" />
                 <ScalarProperty Name="id_egresado" ColumnName="id_egresado" />
                 <ScalarProperty Name="numero_documento" ColumnName="numero_documento" />
                 <ScalarProperty Name="nombres" ColumnName="nombres" />
@@ -1427,24 +1261,6 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Mentorias">
-            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Mentoria">
-              <MappingFragment StoreEntitySet="Mentorias">
-                <ScalarProperty Name="id_mentoria" ColumnName="id_mentoria" />
-                <ScalarProperty Name="id_mentor" ColumnName="id_mentor" />
-                <ScalarProperty Name="id_mentee" ColumnName="id_mentee" />
-                <ScalarProperty Name="area_mentoria" ColumnName="area_mentoria" />
-                <ScalarProperty Name="estado_mentoria" ColumnName="estado_mentoria" />
-                <ScalarProperty Name="fecha_inicio" ColumnName="fecha_inicio" />
-                <ScalarProperty Name="fecha_fin" ColumnName="fecha_fin" />
-                <ScalarProperty Name="objetivos" ColumnName="objetivos" />
-                <ScalarProperty Name="progreso" ColumnName="progreso" />
-                <ScalarProperty Name="calificacion_mentor" ColumnName="calificacion_mentor" />
-                <ScalarProperty Name="calificacion_mentee" ColumnName="calificacion_mentee" />
-                <ScalarProperty Name="comentarios_finales" ColumnName="comentarios_finales" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Notificaciones">
             <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Notificacione">
               <MappingFragment StoreEntitySet="Notificaciones">
@@ -1479,21 +1295,6 @@ advertencia 6002: La tabla o vista 'SistemaEgresadosUtec.dbo.VW_Estadisticas_Emp
                 <ScalarProperty Name="fecha_finalizacion" ColumnName="fecha_finalizacion" />
                 <ScalarProperty Name="contratado" ColumnName="contratado" />
                 <ScalarProperty Name="observaciones" ColumnName="observaciones" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Sesiones_Mentoria">
-            <EntityTypeMapping TypeName="SistemaEgresadosUtecModel.Sesiones_Mentoria">
-              <MappingFragment StoreEntitySet="Sesiones_Mentoria">
-                <ScalarProperty Name="id_sesion" ColumnName="id_sesion" />
-                <ScalarProperty Name="id_mentoria" ColumnName="id_mentoria" />
-                <ScalarProperty Name="fecha_sesion" ColumnName="fecha_sesion" />
-                <ScalarProperty Name="duracion_minutos" ColumnName="duracion_minutos" />
-                <ScalarProperty Name="modalidad" ColumnName="modalidad" />
-                <ScalarProperty Name="temas_tratados" ColumnName="temas_tratados" />
-                <ScalarProperty Name="proximos_pasos" ColumnName="proximos_pasos" />
-                <ScalarProperty Name="calificacion_sesion" ColumnName="calificacion_sesion" />
-                <ScalarProperty Name="completada" ColumnName="completada" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

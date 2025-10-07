@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace SeguimientoEgresados.Servicios
 {
@@ -11,9 +13,10 @@ namespace SeguimientoEgresados.Servicios
     {
         private readonly SistemaEgresadosUtecEntities _db = new SistemaEgresadosUtecEntities();
 
-        public Resultado RegistrarEgresado(string numeroDocumento,string nombres,string apellidos,
-            string email, string telefono,int carrera,DateTime fechaGraduaacion,decimal promedio,bool consentimiento,
-            HttpPostedFileBase CV,int experiencia, string habilidades,string idiomas,string certificaciones)
+        public Resultado RegistrarEgresado(string numeroDocumento, string nombres, string apellidos,
+            string email, string telefono, int carrera, DateTime fechaGraduaacion, decimal promedio, bool consentimiento,
+            HttpPostedFileBase CV, int experiencia, string habilidades, string idiomas, string certificaciones,
+            string hashedPassword)
         {
             try
             {
@@ -22,6 +25,7 @@ namespace SeguimientoEgresados.Servicios
                 {
                     return Resultado.error("Ya existe un egresado con el mismo número de documento o correo electrónico.");
                 }
+
                 var nuevoEgresado = new Egresado
                 {
                     numero_documento = numeroDocumento,
@@ -36,36 +40,42 @@ namespace SeguimientoEgresados.Servicios
                     fecha_registro = DateTime.Now,
                     puntuacion_global = 0,
                     total_estrellas = 0,
-                    nivel_experiencia = "Indefinido"
+                    nivel_experiencia = "Indefinido",
+                    password_hash = hashedPassword
                 };
+
+                _db.Egresados.Add(nuevoEgresado);
+                _db.SaveChanges();
+
                 var resultadoCV = GuardarCV(nuevoEgresado.id_egresado, CV, experiencia, habilidades, idiomas, certificaciones);
                 if (!resultadoCV.Exito)
                 {
-                    return Resultado.error($"Error en guardarCV{resultadoCV.Mensaje}");
+                    return Resultado.error($"Error en guardarCV: {resultadoCV.Mensaje}");
                 }
-                _db.Egresados.Add(nuevoEgresado);
-                _db.SaveChanges();
+
                 return Resultado.exito("Egresado registrado exitosamente.");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Resultado.error("Error al registrar egresado: " + ex.Message);
             }
         }
 
-        public Resultado GuardarCV(int idEgresado, HttpPostedFileBase CV,int experiencia,string habilidades, string idiomas, string certificaciones)
+        public Resultado GuardarCV(int idEgresado, HttpPostedFileBase CV, int experiencia, string habilidades, string idiomas, string certificaciones)
         {
             try
             {
-                if(CV == null || CV.ContentLength == 0)
+                if (CV == null || CV.ContentLength == 0)
                 {
                     return Resultado.error("No se ha proporcionado un archivo CV válido.");
                 }
+
                 var egresado = _db.Egresados.Find(idEgresado);
-                if(egresado == null)
+                if (egresado == null)
                 {
                     return Resultado.error("Egresado no encontrado.");
                 }
+
                 var Cv = new CVs_Egresados()
                 {
                     id_egresado = idEgresado,
@@ -81,6 +91,7 @@ namespace SeguimientoEgresados.Servicios
                     fecha_actualizacion = DateTime.Now,
                     veces_visualizado = 0
                 };
+
                 _db.CVs_Egresados.Add(Cv);
                 _db.SaveChanges();
                 return Resultado.exito("CV guardado exitosamente.");
@@ -90,7 +101,8 @@ namespace SeguimientoEgresados.Servicios
                 return Resultado.error("Error al guardar CV: " + ex.Message);
             }
         }
-        // 📌 Caso 1: Cuando el egresado SÍ trabaja
+
+        // Caso 1: Cuando el egresado SÍ trabaja
         public Resultado GuardarSituacionLaboral_Trabaja(int idEgresado, string empresaActual,
             string cargoActual, string rangoSalarial, string modalidadTrabajo,
             int? satisfaccionTrabajo, bool? usaConocimientosCarrera,
@@ -176,7 +188,7 @@ namespace SeguimientoEgresados.Servicios
             }
         }
 
-        // 📌 Nuevo: Método unificado para evitar CS1061
+        // 📌 Nuevo: Método unificado
         public Resultado GuardarSituacionLaboral(
             int idEgresado, bool trabaja,
             string empresa = null, string cargo = null, string salario = null, string modalidad = null,
@@ -195,7 +207,7 @@ namespace SeguimientoEgresados.Servicios
             }
         }
 
-        // 📂 Método para guardar físicamente el CV en el servidor
+        // 📂 Guardar archivo físicamente
         private string GuardarArchivoCV(HttpPostedFileBase CV)
         {
             try
