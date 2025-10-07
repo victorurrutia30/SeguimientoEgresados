@@ -22,6 +22,8 @@ namespace SeguimientoEgresados.Models
             this.Estrellas_Egresado = new HashSet<Estrellas_Egresado>();
             this.Matching_Resultados = new HashSet<Matching_Resultados>();
             this.Procesos_Seleccion = new HashSet<Procesos_Seleccion>();
+            this.Mentorias = new HashSet<Mentoria>();
+            this.Mentorias1 = new HashSet<Mentoria>();
         }
     
         public int id_egresado { get; set; }
@@ -52,5 +54,9 @@ namespace SeguimientoEgresados.Models
         public virtual ICollection<Matching_Resultados> Matching_Resultados { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Procesos_Seleccion> Procesos_Seleccion { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Mentoria> Mentorias { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Mentoria> Mentorias1 { get; set; }
     }
 }

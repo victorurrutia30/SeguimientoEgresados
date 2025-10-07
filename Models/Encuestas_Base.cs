@@ -25,6 +25,12 @@ namespace SeguimientoEgresados.Models
         public Nullable<bool> usa_conocimientos_carrera { get; set; }
         public Nullable<int> tiempo_conseguir_trabajo { get; set; }
         public Nullable<System.DateTime> fecha_encuesta { get; set; }
+        public string contacta_universidad { get; set; }
+        public Nullable<byte> desea_contacto { get; set; }
+        public Nullable<byte> dispuesto_encuesta_semestral { get; set; }
+        public string metodo_inicio_sesion { get; set; }
+        public string respuestas_json { get; set; }
+        public string sugerencia_funcionalidad { get; set; }
     
         public virtual Egresado Egresado { get; set; }
     }

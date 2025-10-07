@@ -43,6 +43,8 @@ namespace SeguimientoEgresados.Models
         public virtual DbSet<Usuarios_Empresa> Usuarios_Empresa { get; set; }
         public virtual DbSet<VW_Dashboard_Egresados> VW_Dashboard_Egresados { get; set; }
         public virtual DbSet<VW_Estadisticas_Empresas> VW_Estadisticas_Empresas { get; set; }
+        public virtual DbSet<Mentoria> Mentorias { get; set; }
+        public virtual DbSet<Sesiones_Mentoria> Sesiones_Mentoria { get; set; }
     
         public virtual int SP_CalcularMatching(Nullable<int> id_empresa, Nullable<int> top_candidates)
         {

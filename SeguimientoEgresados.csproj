@@ -200,10 +200,16 @@
     <Compile Include="Models\Matching_Resultados.cs">
       <DependentUpon>EgresadosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Mentoria.cs">
+      <DependentUpon>EgresadosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Notificacione.cs">
       <DependentUpon>EgresadosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Procesos_Seleccion.cs">
+      <DependentUpon>EgresadosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Sesiones_Mentoria.cs">
       <DependentUpon>EgresadosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Usuarios_Empresa.cs">
