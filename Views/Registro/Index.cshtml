@@ -1,402 +1,1254 @@
 ﻿@{
-    ViewBag.Title = "Registro";
+    ViewBag.Title = "Onboarding Egresado — Registro";
     ViewBag.HideNavbar = true;
     ViewBag.HideLayoutFooter = true;
 }
 
+<!-- Font Awesome local -->
+<link href="@Url.Content("~/Content/fontawesome/css/all.min.css")" rel="stylesheet" />
+
 <style>
-    .reg-page { position:relative; min-height:100vh; background:center/cover no-repeat fixed; }
-    .reg-page[data-bg] { background-image:url('@Url.Content("~/Content/images/Utec.jpg")'); }
-    .reg-page::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.25)); backdrop-filter:blur(1.5px); z-index:1; }
+    /* Tokens de marca */
+    :root {
+        --brand-primary: #5D0A28;
+        --brand-secondary: #F8F9FA;
+        --brand-tertiary: #343A40;
+        --bs-primary: var(--brand-primary);
+        --bs-secondary: var(--brand-secondary);
+        --bs-dark: var(--brand-tertiary);
+        --bs-body-bg: var(--brand-secondary);
+        --bs-body-color: var(--brand-tertiary);
+        --bs-link-color: var(--brand-primary);
+        --bs-link-hover-color: #7a1036;
+    }
 
-    .reg-wrap{ position:relative; z-index:2; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
-    .reg-card{ width:100%; max-width:900px; background:rgba(255,255,255,.95); border:1px solid rgba(255,255,255,.7);
-               border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,.25); overflow:hidden; }
+    /* Base */
+    body {
+        background-color: var(--brand-secondary);
+        color: var(--brand-tertiary);
+    }
 
-    .reg-header{ padding:24px; text-align:center; border-bottom:1px solid rgba(0,0,0,.06); }
-    .reg-logo{ height:64px; filter:drop-shadow(0 6px 18px rgba(0,0,0,.2)); }
-    .steps{ display:flex; gap:8px; justify-content:center; margin-top:12px; }
-    .step-dot{ width:10px; height:10px; border-radius:999px; background:#dee2e6; }
-    .step-dot.active{ background:#5D0A28; }
+    .text-tertiary {
+        color: var(--brand-tertiary) !important;
+    }
 
-    .reg-body{ padding:24px; }
-    .form-section{ display:none; }
-    .form-section.active{ display:block; }
-    .form-control-lg{ border-radius:14px; padding:12px 16px; }
-    .form-select-lg{ border-radius:14px; padding:12px 16px; }
-    .btn-pill{ border-radius:14px; padding:12px 18px; font-weight:700; }
-    .muted{ color:#6c757d; }
+    /* Header pegajoso */
+    .onb-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: #ffffff;
+        border-bottom: 1px solid rgba(52,58,64,.12);
+    }
 
-    .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-    .grid-3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
-    
+    .brand-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        background: rgba(93,10,40,.08);
+        color: var(--brand-primary);
+        border: 1px solid rgba(93,10,40,.18);
+        padding: .35rem .6rem;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: .9rem;
+    }
 
-    .divider{ height:1px; background:rgba(0,0,0,.06); margin:20px 0; }
+    /* Contenedor principal */
+    .onb-wrap {
+        max-width: 980px;
+        margin: 24px auto;
+        padding: 0 16px;
+    }
+
+    /* Card principal del paso */
+    .onb-card {
+        background: #fff;
+        border: 1px solid rgba(52,58,64,.12);
+        border-radius: 14px;
+        box-shadow: 0 6px 20px rgba(0,0,0,.04);
+    }
+
+    /* Botonera inferior */
+    .onb-actions {
+        gap: .5rem;
+    }
+
+    .btn-ghost {
+        background: transparent;
+        color: var(--brand-tertiary);
+        border: 1px solid rgba(52,58,64,.3);
+    }
+
+        .btn-ghost:hover {
+            background: rgba(52,58,64,.05);
+        }
+
+    /* Stepper + barra de progreso */
+    .stepper {
+        position: relative;
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 8px;
+    }
+
+    .step {
+        text-align: center;
+        position: relative;
+        padding-top: 28px;
+    }
+
+        .step .dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            border: 2px solid var(--brand-primary);
+            background: #fff;
+            color: var(--brand-primary);
+            font-weight: 700;
+            font-size: .9rem;
+        }
+
+        .step.active .dot, .step.done .dot {
+            background: var(--brand-primary);
+            color: #fff;
+        }
+
+        .step .label {
+            font-weight: 700;
+            color: var(--brand-tertiary);
+            font-size: .9rem;
+        }
+
+        .step .desc {
+            font-size: .8rem;
+            color: #6c757d;
+        }
+
+    .progress-rail {
+        position: absolute;
+        left: 8%;
+        right: 8%;
+        top: 13px;
+        height: 4px;
+        background: rgba(52,58,64,.15);
+        border-radius: 999px;
+    }
+
+    .progress-fill {
+        position: absolute;
+        left: 8%;
+        top: 13px;
+        height: 4px;
+        background: var(--brand-primary);
+        border-radius: 999px;
+        width: 0%;
+    }
+
+    .progress-33 .progress-fill {
+        width: 33%;
+    }
+
+    .progress-66 .progress-fill {
+        width: 66%;
+    }
+
+    .progress-100 .progress-fill {
+        width: 100%;
+    }
+
+    /* Titles y ayudas */
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        margin: 0 0 .75rem 0;
+        color: var(--brand-tertiary);
+        font-weight: 700;
+    }
+
+        .section-title .icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: var(--brand-primary);
+        }
+
+    .form-text, .form-hint, .input-legal {
+        color: #6c757d;
+    }
+
+    .form-hint {
+        font-size: .85rem;
+    }
+
+    .input-legal {
+        font-size: .9rem;
+    }
+
+    /* Dropzone simple */
+    .dropzone {
+        border: 2px dashed rgba(52,58,64,.25);
+        border-radius: 12px;
+        padding: 18px;
+        text-align: center;
+        background: #fff;
+    }
+
+        .dropzone .lead {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .dropzone small {
+            color: #6c757d;
+        }
+
+    /* Footer simple */
+    .onb-footer {
+        color: #6c757d;
+        font-size: .9rem;
+    }
+
+    /* “Pantallas” para imprimir/capturar */
+    .screen {
+        margin: 28px 0 48px;
+    }
+
+    @@media print {
+        .screen {
+            break-after: page;
+        }
+    }
+
+    /* Badges */
+    .pill-preload {
+        display: inline-block;
+        padding: .25rem .5rem;
+        border-radius: 999px;
+        background: rgba(52,58,64,.08);
+        color: var(--brand-tertiary);
+        font-size: .8rem;
+        border: 1px solid rgba(52,58,64,.18);
+    }
+
+    /* Accesibilidad */
+    :focus-visible {
+        outline: 3px dashed rgba(93,10,40,.6);
+        outline-offset: 2px;
+    }
 </style>
 
-<div class="reg-page" data-bg>
-    <div class="reg-wrap">
-        <div class="reg-card">
-            <div class="reg-header">
-                <img src="@Url.Content("~/Content/images/logoU.png")" class="reg-logo" alt="UTEC" />
-                <div class="steps">
-                    <div class="step-dot active" id="dot-step1"></div>
-                    <div class="step-dot" id="dot-step2"></div>
-                </div>
-                <p class="muted mb-0">Crea tu cuenta y completa una breve encuesta.</p>
+<!-- Header fijo del onboarding -->
+<header class="onb-header">
+    <div class="container py-3 d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <div class="brand-pill">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>UTEC Egresados</span>
             </div>
-
-            <div class="reg-body">
-                <!-- PASO 1: Datos del egresado -->
-                <section id="step1" class="form-section active">
-                    <h5 class="mb-3">Datos del egresado</h5>
-
-                    <div class="grid-2">
-                        <div>
-                            <label class="form-label">Número de documento</label>
-                            <input class="form-control form-control-lg" id="numeroDocumento" required />
-                        </div>
-                        <div>
-                            <label class="form-label">Teléfono</label>
-                            <input class="form-control form-control-lg" id="telefono" />
-                        </div>
-                        <div>
-                            <label class="form-label">Nombres</label>
-                            <input class="form-control form-control-lg" id="nombres" required />
-                        </div>
-                        <div>
-                            <label class="form-label">Apellidos</label>
-                            <input class="form-control form-control-lg" id="apellidos" required />
-                        </div>
-                        <div>
-                            <label class="form-label">Correo</label>
-                            <input type="email" class="form-control form-control-lg" id="email" required />
-                        </div>
-                        <div>
-                            <label class="form-label">Carrera (ID)</label>
-                            <input type="number" class="form-control form-control-lg" id="carrera" min="1" required />
-                        </div>
-                        <div>
-                            <label class="form-label">Fecha de graduación</label>
-                            <input type="date" class="form-control form-control-lg" id="fechaGraduacion" required />
-                        </div>
-                        <div>
-                            <label class="form-label">Promedio</label>
-                            <input type="number" step="0.01" class="form-control form-control-lg" id="promedio" required />
-                        </div>
-                        <div>
-                            <label class="form-label">Contraseña</label>
-                            <input type="password" class="form-control form-control-lg" id="password" required />
-                        </div>
-                        <div>
-                            <label class="form-label">CV (PDF) - opcional</label>
-                            <input type="file" class="form-control form-control-lg" id="CV" accept="application/pdf" />
-                        </div>
-                        <div>
-                            <label class="form-label">Experiencia (años)</label>
-                            <input type="number" min="0" class="form-control form-control-lg" id="experiencia" value="0" />
-                        </div>
-                        <div>
-                            <label class="form-label">Idiomas</label>
-                            <input class="form-control form-control-lg" id="idiomas" placeholder="Español, Inglés..." />
-                        </div>
-                        <div>
-                            <label class="form-label">Habilidades principales</label>
-                            <textarea class="form-control form-control-lg" id="habilidades" rows="2"></textarea>
-                        </div>
-                        <div>
-                            <label class="form-label">Certificaciones</label>
-                            <textarea class="form-control form-control-lg" id="certificaciones" rows="2"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-check mt-3">
-                        <input class="form-check-input" type="checkbox" id="consentimiento" />
-                        <label class="form-check-label" for="consentimiento">
-                            Autorizo el uso de mis datos conforme a la política de privacidad.
-                        </label>
-                    </div>
-
-                    <div class="d-flex justify-content-end mt-4">
-                        <button class="btn btn-primary btn-pill" id="btnPaso1">Continuar</button>
-                    </div>
-                    <div id="msg1" class="mt-3"></div>
-                </section>
-
-                <!-- PASO 2: Encuesta base -->
-                <section id="step2" class="form-section">
-                    <h5 class="mb-3">Encuesta</h5>
-
-                    <div class="mb-3">
-                        <label class="form-label">¿Estás trabajando actualmente?</label>
-                        <div class="d-flex gap-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="trabaja" id="trabajaSi" value="true" checked>
-                                <label class="form-check-label" for="trabajaSi">Sí</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="trabaja" id="trabajaNo" value="false">
-                                <label class="form-check-label" for="trabajaNo">No</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="camposSiTrabaja">
-                        <div class="grid-3">
-                            <div>
-                                <label class="form-label">Empresa actual</label>
-                                <input class="form-control form-control-lg" id="empresaActual" />
-                            </div>
-                            <div>
-                                <label class="form-label">Cargo actual</label>
-                                <input class="form-control form-control-lg" id="cargoActual" />
-                            </div>
-                            <div>
-                                <label class="form-label">Rango salarial</label>
-                                <input class="form-control form-control-lg" id="rangoSalarial" placeholder="$800 - $1200" />
-                            </div>
-                        </div>
-                        <div class="grid-3 mt-3">
-                            <div>
-                                <label class="form-label">Modalidad de trabajo</label>
-                                <select id="modalidadTrabajo" class="form-select form-select-lg">
-                                    <option value="">Selecciona…</option>
-                                    <option>Presencial</option>
-                                    <option>Remoto</option>
-                                    <option>Híbrido</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="form-label">Satisfacción (1-5)</label>
-                                <input type="number" min="1" max="5" class="form-control form-control-lg" id="satisfaccionTrabajo" />
-                            </div>
-                            <div>
-                                <label class="form-label">¿Usa conocimientos de su carrera?</label>
-                                <select id="usaConocimientosCarrera" class="form-select form-select-lg">
-                                    <option value="">Selecciona…</option>
-                                    <option value="true">Sí</option>
-                                    <option value="false">No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <label class="form-label">Meses que tardó en encontrar trabajo</label>
-                            <input type="number" min="0" class="form-control form-control-lg" id="tiempoConseguirTrabajo" />
-                        </div>
-                    </div>
-
-                    <div class="divider"></div>
-
-                    <h6 class="mb-3">Conectividad con la universidad</h6>
-                    <div class="grid-3">
-                        <div>
-                            <label class="form-label">¿Con qué frecuencia la contacta?</label>
-                            <select id="contactaUniversidad" class="form-select form-select-lg">
-                                <option value="">Selecciona…</option>
-                                <option>Regularmente</option>
-                                <option>PocasVeces</option>
-                                <option>Nunca</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="form-label">¿Desea que lo contactemos?</label>
-                            <select id="deseaContacto" class="form-select form-select-lg">
-                                <option value="">Selecciona…</option>
-                                <option value="1">Sí</option>
-                                <option value="0">No</option>
-                                <option value="2">TalVez</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="form-label">Encuesta semestral</label>
-                            <select id="dispuestoEncuestaSemestral" class="form-select form-select-lg">
-                                <option value="">Selecciona…</option>
-                                <option value="1">Sí</option>
-                                <option value="0">No</option>
-                                <option value="2">TalVez</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grid-2 mt-3">
-                        <div>
-                            <label class="form-label">Método preferido de inicio de sesión</label>
-                            <select id="metodoInicioSesion" class="form-select form-select-lg">
-                                <option>Email</option>
-                                <option>Google</option>
-                                <option>LinkedIn</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="form-label">Intereses (multi-selección)</label>
-                            <select id="intereses" class="form-select form-select-lg" multiple>
-                                <option value="networking">Networking</option>
-                                <option value="bolsa_trabajo">Bolsa de trabajo</option>
-                                <option value="mentorias">Mentorías</option>
-                                <option value="eventos">Eventos</option>
-                                <option value="otro">Otro (especificar abajo)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="mt-3">
-                        <label class="form-label">Si elegiste “Otro”, especifica</label>
-                        <input class="form-control form-control-lg" id="interesOtro" />
-                    </div>
-
-                    <div class="mt-3">
-                        <label class="form-label">¿Qué funcionalidad te gustaría ver?</label>
-                        <textarea class="form-control form-control-lg" id="sugerenciaFuncionalidad" rows="2"></textarea>
-                    </div>
-
-                    <div class="d-flex justify-content-between mt-4">
-                        <button class="btn btn-outline-secondary btn-pill" id="btnVolver">Volver</button>
-                        <button class="btn btn-primary btn-pill" id="btnEnviarEncuesta">Finalizar</button>
-                    </div>
-
-                    <div id="msg2" class="mt-3"></div>
-                </section>
+            <div class="vr"></div>
+            <div>
+                <div class="fw-bold text-tertiary">Crear cuenta / Onboarding</div>
+                <div class="small text-muted">Completa los 3 pasos para activar tu perfil</div>
             </div>
         </div>
+        <a href="@Url.Action("Index","Home")" class="btn btn-ghost btn-sm">
+            <i class="fa-regular fa-circle-stop me-1"></i> Salir y continuar luego
+        </a>
     </div>
-</div>
+</header>
 
-@section scripts{
-    <script>
-    (function(){
-        var egresadoId = null;
+<main class="onb-wrap">
+    <!-- Token Anti-CSRF para envíos AJAX -->
+    <form id="__af">@Html.AntiForgeryToken()</form>
 
-        function goStep(step){
-            document.getElementById('step1').classList.toggle('active', step===1);
-            document.getElementById('step2').classList.toggle('active', step===2);
-            document.getElementById('dot-step1').classList.toggle('active', step===1);
-            document.getElementById('dot-step2').classList.toggle('active', step===2);
-        }
+    <!-- ============================================================
+         PASO 1 — VERIFICACIÓN + DATOS BÁSICOS
+         ============================================================ -->
+    <section id="wizard-step1" class="screen">
+        <div class="mb-4 position-relative progress-33">
+            <div class="progress-rail"></div>
+            <div class="progress-fill"></div>
+            <ol class="stepper mt-3">
+                <li class="step active">
+                    <div class="dot" aria-hidden="true">1</div>
+                    <div class="label">Verificación</div>
+                    <div class="desc">Confirma tu identidad</div>
+                </li>
+                <li class="step">
+                    <div class="dot" aria-hidden="true">2</div>
+                    <div class="label">Consentimiento</div>
+                    <div class="desc">Privacidad de datos</div>
+                </li>
+                <li class="step">
+                    <div class="dot" aria-hidden="true">3</div>
+                    <div class="label">Encuesta</div>
+                    <div class="desc">Situación laboral</div>
+                </li>
+            </ol>
+        </div>
 
-        // Mostrar/ocultar campos "si trabaja"
-        function toggleSiTrabaja(){
-            var si = document.getElementById('trabajaSi').checked;
-            document.getElementById('camposSiTrabaja').style.display = si ? 'block':'none';
-        }
-        document.getElementById('trabajaSi').addEventListener('change', toggleSiTrabaja);
-        document.getElementById('trabajaNo').addEventListener('change', toggleSiTrabaja);
-        toggleSiTrabaja();
+        <div class="onb-card p-4 p-md-5">
+            <h1 class="h4 mb-1">Paso 1 — Verifica tu identidad</h1>
+            <p class="text-muted mb-4">Usamos estos datos para confirmar que eres egresado y crear tu cuenta.</p>
 
-        // Paso 1 → Registrar egresado
-        document.getElementById('btnPaso1').addEventListener('click', function(){
-            var fd = new FormData();
-            fd.append('numeroDocumento', document.getElementById('numeroDocumento').value);
-            fd.append('nombres', document.getElementById('nombres').value);
-            fd.append('apellidos', document.getElementById('apellidos').value);
-            fd.append('email', document.getElementById('email').value);
-            fd.append('telefono', document.getElementById('telefono').value);
-            fd.append('carrera', document.getElementById('carrera').value);
-            fd.append('fechaGraduaacion', document.getElementById('fechaGraduacion').value);
-            fd.append('promedio', document.getElementById('promedio').value);
-            fd.append('consentimiento', document.getElementById('consentimiento').checked);
-            fd.append('password', document.getElementById('password').value);
-            fd.append('experiencia', document.getElementById('experiencia').value || 0);
-            fd.append('habilidades', document.getElementById('habilidades').value);
-            fd.append('idiomas', document.getElementById('idiomas').value);
-            fd.append('certificaciones', document.getElementById('certificaciones').value);
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="nombres" class="form-label">Nombres</label>
+                    <input type="text" id="nombres" class="form-control" placeholder="María José" />
+                </div>
+                <div class="col-md-6">
+                    <label for="apellidos" class="form-label">Apellidos</label>
+                    <input type="text" id="apellidos" class="form-control" placeholder="Pérez López" />
+                </div>
 
-            var cv = document.getElementById('CV').files[0];
-            if (cv) fd.append('CV', cv);
+                <div class="col-md-6">
+                    <label for="emailInst" class="form-label">Correo institucional</label>
+                    <input type="email" id="emailInst" class="form-control"
+                           placeholder="nombre.apellido&#64;utec.edu.sv" aria-describedby="hintEmail" />
+                    <div id="hintEmail" class="form-text">
+                        Debe ser un correo válido (p. ej. &#64;utec.edu.sv si aplica).
+                    </div>
+                </div>
 
-            var msg = document.getElementById('msg1');
-            msg.innerHTML = '';
+                <div class="col-md-6">
+                    <label for="telefono" class="form-label">Teléfono</label>
+                    <input type="tel" id="telefono" class="form-control" placeholder="+503 7000 0000" />
+                </div>
 
-            fetch('@Url.Action("RegistrarEgresado","Registro")', {
-                method: 'POST',
-                body: fd
-            })
-            .then(r => r.json())
-            .then(res => {
-                if(res.success){
-                    egresadoId = res.idEgresado;
-                    msg.innerHTML = '<div class="alert alert-success">¡Registro guardado! Continúa con la encuesta.</div>';
-                    goStep(2);
-                } else {
-                    msg.innerHTML = '<div class="alert alert-danger">'+ (res.message || 'Error al registrar') +'</div>';
+                <div class="col-md-6">
+                    <label for="carne" class="form-label">Número de estudiante / Carné</label>
+                    <input type="text" id="carne" class="form-control" placeholder="A12345" aria-describedby="hintCarne" />
+                    <div id="hintCarne" class="form-text">4–12 caracteres alfanuméricos, sin espacios.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="fechaGrad" class="form-label">Fecha de graduación</label>
+                    <input type="date" id="fechaGrad" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                    <label for="promedio" class="form-label">Promedio final (opcional)</label>
+                    <input type="number" step="0.01" min="0" max="10" id="promedio" class="form-control" placeholder="8.75" />
+                    <div class="form-hint">Formato decimal, usa punto.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="experiencia" class="form-label">Años de experiencia (opcional)</label>
+                    <input type="number" min="0" step="1" id="experiencia" class="form-control" placeholder="0" />
+                </div>
+
+                @{
+                    var carreras = ViewBag.Carreras as IEnumerable<SelectListItem>;
                 }
-            })
-            .catch(() => msg.innerHTML = '<div class="alert alert-danger">Error de red.</div>');
-        });
+                <div class="col-md-6">
+                    <label for="carrera" class="form-label">Carrera</label>
+                    <select id="carrera" name="carrera" class="form-select">
+                        <option value="">Selecciona tu carrera…</option>
+                        @if (carreras != null)
+                        {
+                            foreach (var op in carreras)
+                            {
+                                <option value="@op.Value">@op.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
 
-        // Paso 2 → Guardar encuesta
-        document.getElementById('btnEnviarEncuesta').addEventListener('click', function(){
-            if(!egresadoId){
-                document.getElementById('msg2').innerHTML = '<div class="alert alert-danger">No se encontró el ID de egresado. Repite el paso 1.</div>';
-                return;
-            }
+                <div class="col-md-6">
+                    <label for="certificaciones" class="form-label">Certificaciones (opcional)</label>
+                    <input id="certificaciones" class="form-control" type="text" placeholder="AWS, Scrum, ITIL" />
+                    <div class="form-hint">Sepáralas por coma.</div>
+                </div>
 
-            var trabaja = document.querySelector('input[name="trabaja"]:checked').value === 'true';
+                <div class="col-md-6">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" id="password" class="form-control" placeholder="********" />
+                    <div class="form-hint">Mínimo 6 caracteres.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="password2" class="form-label">Confirmar contraseña</label>
+                    <input type="password" id="password2" class="form-control" placeholder="********" />
+                </div>
+            </div>
 
-            // Construir JSON de intereses
-            var interesesSel = Array.from(document.getElementById('intereses').selectedOptions).map(o => o.value);
-            var payloadJson = {
-                intereses: interesesSel,
-                otro: document.getElementById('interesOtro').value || null
-            };
-            var respuestasJson = JSON.stringify(payloadJson);
+            <hr class="my-4" />
 
-            var data = new URLSearchParams();
-            data.append('idEgresado', egresadoId);
-            data.append('trabajandoActualmente', trabaja);
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <div class="input-legal">
+                    <i class="fa-regular fa-circle-question me-1"></i>
+                    Si tienes problemas, contacta soporte.
+                </div>
+                <div class="onb-actions d-flex">
+                    <button class="btn btn-ghost" type="button" id="btnStep1Back">Atrás</button>
+                    <button class="btn btn-outline-primary" type="button" id="btnStep1Draft">Guardar borrador</button>
+                    <button class="btn btn-primary" type="button" id="btnStep1Validate">Validar identidad</button>
+                    <button class="btn btn-primary" type="button" id="btnStep1Next" disabled>Continuar</button>
+                </div>
+            </div>
+        </div>
 
-            if(trabaja){
-                data.append('empresaActual', document.getElementById('empresaActual').value);
-                data.append('cargoActual', document.getElementById('cargoActual').value);
-                data.append('rangoSalarial', document.getElementById('rangoSalarial').value);
-                data.append('modalidadTrabajo', document.getElementById('modalidadTrabajo').value);
-                var sat = document.getElementById('satisfaccionTrabajo').value;
-                data.append('satisfaccionTrabajo', sat ? sat : '');
-                var usa = document.getElementById('usaConocimientosCarrera').value;
-                data.append('usaConocimientosCarrera', usa ? usa : '');
-                var t = document.getElementById('tiempoConseguirTrabajo').value;
-                data.append('tiempoConseguirTrabajo', t ? t : '');
-            } else {
-                // Campos "trabaja" quedan vacíos
-                data.append('empresaActual', '');
-                data.append('cargoActual', '');
-                data.append('rangoSalarial', '');
-                data.append('modalidadTrabajo', '');
-                data.append('satisfaccionTrabajo', '');
-                data.append('usaConocimientosCarrera', '');
-                data.append('tiempoConseguirTrabajo', '');
-            }
+        <div class="onb-footer mt-3 text-center">
+            <a href="#">Ayuda / FAQ</a> · <a href="#">Política de privacidad</a> · <a href="#">Términos</a>
+        </div>
+    </section>
 
-            // Nuevos campos
-            data.append('contactaUniversidad', document.getElementById('contactaUniversidad').value);
-            data.append('deseaContacto', document.getElementById('deseaContacto').value);
-            data.append('dispuestoEncuestaSemestral', document.getElementById('dispuestoEncuestaSemestral').value);
-            data.append('metodoInicioSesion', document.getElementById('metodoInicioSesion').value);
-            data.append('respuestasJson', respuestasJson);
-            data.append('sugerenciaFuncionalidad', document.getElementById('sugerenciaFuncionalidad').value);
+    <!-- ============================================================
+         PASO 2 — CONSENTIMIENTO / PREFERENCIAS DE CONTACTO
+         ============================================================ -->
+    <section id="wizard-step2" class="screen" style="display:none">
+        <div class="mb-4 position-relative progress-66">
+            <div class="progress-rail"></div>
+            <div class="progress-fill"></div>
+            <ol class="stepper mt-3">
+                <li class="step done">
+                    <div class="dot" aria-hidden="true"><i class="fa-solid fa-check"></i></div>
+                    <div class="label">Verificación</div>
+                    <div class="desc">Completado</div>
+                </li>
+                <li class="step active">
+                    <div class="dot" aria-hidden="true">2</div>
+                    <div class="label">Consentimiento</div>
+                    <div class="desc">Privacidad de datos</div>
+                </li>
+                <li class="step">
+                    <div class="dot" aria-hidden="true">3</div>
+                    <div class="label">Encuesta</div>
+                    <div class="desc">Situación laboral</div>
+                </li>
+            </ol>
+        </div>
 
-            var msg2 = document.getElementById('msg2');
-            msg2.innerHTML = '';
+        <div class="onb-card p-4 p-md-5">
+            <h2 class="h4 mb-3">Paso 2 — Tu privacidad</h2>
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div>
+                            <h3 class="h6 m-0">Resumen de privacidad</h3>
+                            <p class="mb-2 text-muted">
+                                Usamos tus datos para gestionar el módulo de egresados, generar estadísticas de inserción laboral y ofrecerte recomendaciones personalizadas.
+                            </p>
+                            <a href="#" class="link-primary"><i class="fa-regular fa-file-lines me-1"></i>Leer política completa</a>
+                        </div>
+                    </div>
+                </div>
 
-            fetch('@Url.Action("GuardarSituacionLaboral","Registro")', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-                body: data.toString()
-            })
-            .then(r => r.json())
-            .then(res => {
-                if(res.success){
-                    msg2.innerHTML = '<div class="alert alert-success">¡Gracias! Encuesta guardada.</div>';
-                    setTimeout(function(){
-                        window.location.href = '@Url.Action("Index","Autenticacion")';
-                    }, 800);
-                } else {
-                    msg2.innerHTML = '<div class="alert alert-danger">'+ (res.message || 'Error al guardar la encuesta') +'</div>';
-                }
-            })
-            .catch(() => msg2.innerHTML = '<div class="alert alert-danger">Error de red.</div>');
-        });
+                <div class="col-12">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="consentPrivacy" aria-describedby="consentErr">
+                        <label class="form-check-label" for="consentPrivacy">
+                            He leído y acepto la política de privacidad y el tratamiento de mis datos personales.
+                        </label>
+                    </div>
+                    <div id="consentErr" class="invalid-feedback d-block" style="display:none;">
+                        Debes aceptar para continuar.
+                    </div>
+                </div>
 
-        document.getElementById('btnVolver').addEventListener('click', function(){ goStep(1); });
-    })();
-    </script>
+                <div class="col-md-6">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="consentMarketing">
+                        <label class="form-check-label" for="consentMarketing">
+                            Quiero recibir oportunidades de empleo por email/SMS (opcional)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="contactaUniversidad" class="form-label">¿Cómo prefieres que te contactemos?</label>
+                    <select id="contactaUniversidad" class="form-select">
+                        <option value="">Sin preferencia</option>
+                        <option>Email</option>
+                        <option>WhatsApp</option>
+                        <option>Teléfono</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="deseaContacto">
+                        <label class="form-check-label" for="deseaContacto">
+                            Deseo que la universidad me contacte con novedades para egresados
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="encuestaSemestral">
+                        <label class="form-check-label" for="encuestaSemestral">
+                            Estoy dispuesto a responder una encuesta semestral
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label for="sugerencia" class="form-label">¿Qué funcionalidad te gustaría ver? (opcional)</label>
+                    <textarea id="sugerencia" class="form-control" rows="2" placeholder="Bolsa interna, mentorías, ferias, etc."></textarea>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <div class="input-legal">
+                    <i class="fa-regular fa-clock me-1"></i>
+                    Puedes retirar tu consentimiento cuando lo desees.
+                </div>
+                <div class="onb-actions d-flex">
+                    <button class="btn btn-ghost" type="button" id="btnStep2Back">Atrás</button>
+                    <button class="btn btn-outline-primary" type="button" id="btnStep2Draft">Guardar borrador</button>
+                    <button class="btn btn-primary" type="button" id="btnStep2Next" disabled>Continuar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="onb-footer mt-3 text-center">
+            <a href="#">Ayuda / FAQ</a> · <a href="#">Política de privacidad</a> · <a href="#">Términos</a>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         PASO 3A — ENCUESTA (SÍ TRABAJA)
+         ============================================================ -->
+    <section id="wizard-step3A" class="screen" style="display:none">
+        <div class="mb-4 position-relative progress-100">
+            <div class="progress-rail"></div>
+            <div class="progress-fill"></div>
+            <ol class="stepper mt-3">
+                <li class="step done">
+                    <div class="dot" aria-hidden="true"><i class="fa-solid fa-check"></i></div>
+                    <div class="label">Verificación</div>
+                    <div class="desc">Completado</div>
+                </li>
+                <li class="step done">
+                    <div class="dot" aria-hidden="true"><i class="fa-solid fa-check"></i></div>
+                    <div class="label">Consentimiento</div>
+                    <div class="desc">Completado</div>
+                </li>
+                <li class="step active">
+                    <div class="dot" aria-hidden="true">3</div>
+                    <div class="label">Encuesta</div>
+                    <div class="desc">Situación laboral</div>
+                </li>
+            </ol>
+        </div>
+
+        <div class="onb-card p-4 p-md-5">
+            <h2 class="h4 mb-1">Paso 3 — Cuéntanos tu situación</h2>
+            <p class="text-muted mb-4">Así personalizamos tus sugerencias y estadísticas.</p>
+
+            <div class="mb-3">
+                <label class="form-label d-block">¿Actualmente trabajas?</label>
+                <div class="d-flex gap-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="trabaja" id="trabajaSi" checked>
+                        <label class="form-check-label" for="trabajaSi">Sí, estoy trabajando</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="trabaja" id="trabajaNo">
+                        <label class="form-check-label" for="trabajaNo">No, estoy buscando empleo</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rama A: Sí trabaja -->
+            <div class="mt-4">
+                <h3 class="section-title"><span class="icon"><i class="fa-solid fa-briefcase"></i></span>Situación laboral</h3>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="empresa">Empresa</label>
+                        <input id="empresa" class="form-control" type="text" placeholder="InnovateTech Solutions" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="cargo">Cargo</label>
+                        <input id="cargo" class="form-control" type="text" placeholder="Desarrollador/a Full Stack" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="area">Área/Función</label>
+                        <select id="area" class="form-select">
+                            <option>Desarrollo</option>
+                            <option>Soporte</option>
+                            <option>QA</option>
+                            <option>Datos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="tipoContr">Tipo de contrato</label>
+                        <select id="tipoContr" class="form-select">
+                            <option>Tiempo completo</option>
+                            <option>Medio tiempo</option>
+                            <option>Temporal</option>
+                            <option>Independiente</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="modalidad">Modalidad</label>
+                        <select id="modalidad" class="form-select">
+                            <option>Presencial</option>
+                            <option>Mixta</option>
+                            <option>Remota</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="antig">Antigüedad</label>
+                        <select id="antig" class="form-select">
+                            <option>&lt;6m</option>
+                            <option>6–12m</option>
+                            <option>1–2 años</option>
+                            <option>2–5</option>
+                            <option>&gt;5</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3 class="section-title mt-4"><span class="icon"><i class="fa-solid fa-sack-dollar"></i></span>Compensación (opcional)</h3>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="rango">Rango salarial</label>
+                        <select id="rango" class="form-select">
+                            <option>Confidencial</option>
+                            <option>$0–$600</option>
+                            <option>$600–$1200</option>
+                            <option>$1200–$2000</option>
+                            <option>$2000+</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Beneficios principales</label>
+                        <div class="d-flex flex-wrap gap-3">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="ben1"><label class="form-check-label" for="ben1">Médico</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="ben2"><label class="form-check-label" for="ben2">Bono</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="ben3"><label class="form-check-label" for="ben3">Remoto</label></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="section-title mt-4"><span class="icon"><i class="fa-solid fa-timeline"></i></span>Trayectoria</h3>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="tiempoPrimerEmpleo">Tiempo desde graduación al 1er empleo</label>
+                        <select id="tiempoPrimerEmpleo" class="form-select">
+                            <option>0–3m</option>
+                            <option>4–6m</option>
+                            <option>7–12m</option>
+                            <option>&gt;12m</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label" for="satisfaccion">Satisfacción (1–5)</label>
+                        <select id="satisfaccion" class="form-select">
+                            <option value="">Sin respuesta</option>
+                            <option value="1">1 — Muy baja</option>
+                            <option value="2">2 — Baja</option>
+                            <option value="3">3 — Media</option>
+                            <option value="4">4 — Alta</option>
+                            <option value="5">5 — Muy alta</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="usaConocimientos">
+                            <label class="form-check-label" for="usaConocimientos">Uso conocimientos de la carrera</label>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="section-title mt-4"><span class="icon"><i class="fa-solid fa-language"></i></span>Habilidades e idiomas</h3>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label" for="idioma">Idioma</label>
+                        <select id="idioma" class="form-select">
+                            <option>Español</option>
+                            <option>Inglés</option>
+                            <option>Portugués</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="nivel">Nivel</label>
+                        <select id="nivel" class="form-select">
+                            <option>A1</option>
+                            <option>A2</option>
+                            <option>B1</option>
+                            <option>B2</option>
+                            <option>C1</option>
+                            <option>C2</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label" for="skills">Habilidades</label>
+                        <input id="skills" class="form-control" type="text" placeholder="JavaScript, SQL, Trabajo en equipo" />
+                        <div class="form-hint mt-1">Escribe habilidades separadas por coma.</div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <div class="input-legal">
+                    <i class="fa-regular fa-circle-check me-1"></i>
+                    Estos datos alimentan estadísticas y recomendaciones.
+                </div>
+                <div class="onb-actions d-flex">
+                    <button class="btn btn-ghost" type="button" id="btnStep3ABack">Atrás</button>
+                    <button class="btn btn-outline-primary" type="button" id="btnStep3ADraft">Guardar borrador</button>
+                    <button class="btn btn-primary" type="button" id="btnStep3AFinish">Finalizar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="onb-footer mt-3 text-center">
+            <a href="#">Ayuda / FAQ</a> · <a href="#">Política de privacidad</a> · <a href="#">Términos</a>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         PASO 3B — ENCUESTA (NO TRABAJA)
+         ============================================================ -->
+    <section id="wizard-step3B" class="screen" style="display:none">
+        <div class="mb-4 position-relative progress-100">
+            <div class="progress-rail"></div>
+            <div class="progress-fill"></div>
+            <ol class="stepper mt-3">
+                <li class="step done">
+                    <div class="dot" aria-hidden="true"><i class="fa-solid fa-check"></i></div>
+                    <div class="label">Verificación</div>
+                    <div class="desc">Completado</div>
+                </li>
+                <li class="step done">
+                    <div class="dot" aria-hidden="true"><i class="fa-solid fa-check"></i></div>
+                    <div class="label">Consentimiento</div>
+                    <div class="desc">Completado</div>
+                </li>
+                <li class="step active">
+                    <div class="dot" aria-hidden="true">3</div>
+                    <div class="label">Encuesta</div>
+                    <div class="desc">Situación laboral</div>
+                </li>
+            </ol>
+        </div>
+
+        <div class="onb-card p-4 p-md-5">
+            <h2 class="h4 mb-1">Paso 3 — Cuéntanos tu situación</h2>
+            <p class="text-muted mb-4">Tu CV es clave para recomendarte empleos.</p>
+
+            <div class="mb-3">
+                <label class="form-label d-block">¿Actualmente trabajas?</label>
+                <div class="d-flex gap-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="trabaja2" id="trabajaSi2">
+                        <label class="form-check-label" for="trabajaSi2">Sí, estoy trabajando</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="trabaja2" id="trabajaNo2" checked>
+                        <label class="form-check-label" for="trabajaNo2">No, estoy buscando empleo</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h3 class="section-title"><span class="icon"><i class="fa-regular fa-calendar-check"></i></span>Disponibilidad</h3>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="dispInmediata" checked>
+                            <label class="form-check-label" for="dispInmediata">Disponibilidad inmediata</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="fechaDisp">Fecha disponible</label>
+                        <input class="form-control" type="date" id="fechaDisp" disabled>
+                        <div class="form-hint">Deshabilitado si es inmediata.</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="modalPref">Modalidad preferida</label>
+                        <select id="modalPref" class="form-select">
+                            <option>Presencial</option>
+                            <option>Mixta</option>
+                            <option>Remota</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="jornada">Jornada</label>
+                        <select id="jornada" class="form-select">
+                            <option>Tiempo completo</option>
+                            <option>Medio tiempo</option>
+                            <option>Independiente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3 class="section-title mt-4"><span class="icon"><i class="fa-regular fa-file-pdf"></i></span>CV (obligatorio)</h3>
+                <div class="dropzone" id="cvDrop">
+                    <p class="lead mb-1">
+                        <i class="fa-regular fa-file-pdf me-2"></i>Arrastra tu CV (PDF) o
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnSelectCV">Seleccionar…</button>
+                    </p>
+                    <small>Formato .pdf · Máx. 5 MB</small>
+                    <input type="file" id="cvFile" name="CV" accept="application/pdf" style="display:none" />
+                    <div id="cvName" class="form-hint mt-2"></div>
+                </div>
+                <div class="form-hint mt-2">Solo se admite PDF de hasta 5MB.</div>
+
+                <h3 class="section-title mt-4"><span class="icon"><i class="fa-solid fa-sliders"></i></span>Preferencias</h3>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="areas">Áreas de interés</label>
+                        <input id="areas" class="form-control" type="text" placeholder="Desarrollo, Soporte" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="locs">Ubicaciones preferidas</label>
+                        <input id="locs" class="form-control" type="text" placeholder="San Salvador, Remoto" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="idioma2">Idioma</label>
+                        <select id="idioma2" class="form-select">
+                            <option>Español</option>
+                            <option>Inglés</option>
+                            <option>Portugués</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="nivel2">Nivel</label>
+                        <select id="nivel2" class="form-select">
+                            <option>A1</option>
+                            <option>A2</option>
+                            <option>B1</option>
+                            <option>B2</option>
+                            <option>C1</option>
+                            <option>C2</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label" for="skills2">Habilidades</label>
+                        <input id="skills2" class="form-control" type="text" placeholder="JavaScript, SQL, Comunicación" />
+                    </div>
+                    <div class="col-12">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="alertasEmpleo" checked>
+                            <label class="form-check-label" for="alertasEmpleo">Activar alertas de empleo por email</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <div class="input-legal">
+                    <i class="fa-regular fa-bell me-1"></i>
+                    Recibirás sugerencias basadas en tu perfil y CV.
+                </div>
+                <div class="onb-actions d-flex">
+                    <button class="btn btn-ghost" type="button" id="btnStep3BBack">Atrás</button>
+                    <button class="btn btn-outline-primary" type="button" id="btnStep3BDraft">Guardar borrador</button>
+                    <button class="btn btn-primary" type="button" id="btnStep3BFinish">Finalizar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="onb-footer mt-3 text-center">
+            <a href="#">Ayuda / FAQ</a> · <a href="#">Política de privacidad</a> · <a href="#">Términos</a>
+        </div>
+    </section>
+
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+// ===== Utilidades básicas =====
+function $(sel){ return document.querySelector(sel); }
+function getToken(){
+  var el = document.querySelector('input[name="__RequestVerificationToken"]');
+  return el ? el.value : "";
 }
+
+// Detecta si el servidor devolvió HTML/redirect en vez de JSON
+function safeJson(resp){
+  const ct = resp.headers.get('content-type') || '';
+  if (resp.ok && ct.includes('application/json')) return resp.json();
+  return resp.text().then(t => {
+    console.error('NO JSON', resp.status, resp.url, t.slice(0,300));
+    throw new Error('Respuesta no-JSON ('+resp.status+'). Revisa autorización/binder/errores del servidor.');
+  });
+}
+
+// Convierte objeto a application/x-www-form-urlencoded (para MVC 5)
+function toForm(obj){
+  const p = new URLSearchParams();
+  Object.keys(obj).forEach(k => p.append(k, obj[k] == null ? '' : String(obj[k])));
+  return p;
+}
+
+var URLS = @Html.Raw(Json.Encode(new {
+  reg = Url.Action("RegistrarEgresado","Registro"),
+  sit = Url.Action("GuardarSituacionLaboral","Registro"),
+  home = Url.Action("Index","Home")
+}));
+
+    function showStep(id) {
+        ["wizard-step1", "wizard-step2", "wizard-step3A", "wizard-step3B"].forEach(function (s) {
+            var el = document.getElementById(s);
+            if (!el) return;
+            el.style.display = (s === id) ? "" : "none";
+        });
+
+        // Progreso sin desbordar: 33/66/100 sobre la vía real (100% - 16% por los márgenes 8%+8%)
+        var factor = (id === "wizard-step1") ? 0.33 : (id === "wizard-step2") ? 0.66 : 1;
+        var pf = document.querySelector('#' + id + ' .progress-fill');
+        if (pf) {
+            pf.style.width = 'calc((100% - 16%) * ' + factor + ')'; // 16% = 8% izq + 8% der
+        }
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+// ===== UX: input de CV (Paso 3B) =====
+(function(){
+  var btn = $("#btnSelectCV"), inp = $("#cvFile"), name = $("#cvName"), dz = $("#cvDrop");
+  if(btn && inp){
+    btn.addEventListener("click", function(){ inp.click(); });
+    inp.addEventListener("change", function(){
+      if(!inp.files || !inp.files.length){ name && (name.textContent=""); return; }
+      var f = inp.files[0];
+      if(f.type !== "application/pdf"){ alert("Solo PDF"); inp.value=""; name && (name.textContent=""); return; }
+      if(f.size > 5*1024*1024){ alert("Máx. 5MB"); inp.value=""; name && (name.textContent=""); return; }
+      if(name){ name.textContent = f.name + " (" + Math.round(f.size/1024) + " KB)"; }
+    });
+    ["dragover","drop"].forEach(function(evt){
+      if(!dz) return;
+      dz.addEventListener(evt, function(e){
+        e.preventDefault();
+        if(evt==="drop" && e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]){
+          // Asigna archivos y dispara change
+          try{
+            var dt = new DataTransfer();
+            dt.items.add(e.dataTransfer.files[0]);
+            inp.files = dt.files;
+          }catch(_){
+            inp.files = e.dataTransfer.files;
+          }
+          inp.dispatchEvent(new Event("change", { bubbles:true }));
+        }
+      });
+    });
+  }
+})();
+
+// Toggle fecha disponible (Paso 3B)
+(function(){
+  var chk = $("#dispInmediata");
+  var fd = $("#fechaDisp");
+  if(!chk || !fd) return;
+  var up = function(){ fd.disabled = chk.checked; if(chk.checked) fd.value=""; };
+  chk.addEventListener("change", up); up();
+})();
+
+// ===== Paso 1: Validar y continuar =====
+(function () {
+  var btnValidate = $("#btnStep1Validate");
+  var btnNext = $("#btnStep1Next");
+  var btnBack = $("#btnStep1Back");
+
+  function validoPaso1() {
+    var email = document.querySelector("#emailInst");
+    var carne = document.querySelector("#carne");
+    var fechaGrad = document.querySelector("#fechaGrad");
+    var carrera = document.querySelector("#carrera");
+    var nombres = document.querySelector("#nombres");
+    var apellidos = document.querySelector("#apellidos");
+    var pass = document.querySelector("#password");
+    var pass2 = document.querySelector("#password2");
+
+    // En .cshtml usa @@ para que Razor emita un solo arroba
+    var okEmail = email && /^\S+@@\S+\.\S+$/.test((email.value || "").trim());
+    var okCarne = carne && (carne.value || "").trim().length >= 4;
+    var okFechaGrad = fechaGrad && (fechaGrad.value || "").trim().length > 0;
+
+    // Si <select> usa "0" o "-1" como placeholder, invalídalo
+    var valCarrera = (carrera && (carrera.value || "").trim()) || "";
+    var okCarrera = valCarrera !== "" && valCarrera !== "0" && valCarrera !== "-1";
+
+    var okNom = nombres && (nombres.value || "").trim().length >= 2;
+    var okApe = apellidos && (apellidos.value || "").trim().length >= 2;
+    var okPass = pass && (pass.value || "").length >= 6 && pass.value === (pass2 ? pass2.value : "");
+
+    return okEmail && okCarne && okFechaGrad && okCarrera && okNom && okApe && okPass;
+  }
+
+  if (btnValidate) {
+    btnValidate.addEventListener("click", function (e) {
+      if (e) e.preventDefault();
+      if (validoPaso1()) {
+        if (btnNext) btnNext.disabled = false;
+        alert("Identidad validada. Ya puedes continuar.");
+      } else {
+        alert("Revisa: nombre, apellidos, correo, carné, carrera, fecha de graduación y contraseña (mín. 6 y coinciden).");
+      }
+    });
+  }
+
+  if (btnNext) {
+    btnNext.addEventListener("click", function (e) {
+      if (e) e.preventDefault();
+      if (!btnNext.disabled) showStep("wizard-step2");
+    });
+  }
+
+  if (btnBack) {
+    btnBack.addEventListener("click", function (e) {
+      if (e) e.preventDefault();
+      if (document.referrer) history.back();
+      else window.location.href = URLS.home;
+    });
+  }
+})();
+
+// ===== Paso 2: Consentimiento =====
+(function(){
+  var chk = $("#consentPrivacy");
+  var err = $("#consentErr");
+  var btnNext = $("#btnStep2Next");
+  var btnBack = $("#btnStep2Back");
+
+  function update(){
+    var ok = chk && chk.checked;
+    if(btnNext) btnNext.disabled = !ok;
+    if(err) err.style.display = ok ? "none" : "block";
+  }
+  if(chk){ chk.addEventListener("change", update); update(); }
+  if(btnNext){ btnNext.addEventListener("click", function(){ if(!btnNext.disabled) showStep("wizard-step3A"); }); }
+  if(btnBack){ btnBack.addEventListener("click", function(){ showStep("wizard-step1"); }); }
+})();
+
+// ===== Helpers =====
+function parseMeses(valor){
+  if(!valor) return null;
+  if(valor.indexOf('0')===0) return 3;
+  if(valor.indexOf('4')===0) return 6;
+  if(valor.indexOf('7')===0) return 12;
+  if(valor.indexOf('>')===0) return 13;
+  return null;
+}
+function toDecimalString(v){
+  var n = parseFloat(v);
+  if(isNaN(n)) return "0";
+  return n.toString();
+}
+
+// ===== POST: Registrar egresado =====
+function postRegistrarEgresado(isTrabajando){
+  var fd = new FormData();
+  fd.append('__RequestVerificationToken', getToken());
+
+  // Paso 1
+  fd.append('numeroDocumento', ($("#carne") && $("#carne").value) || '');
+  fd.append('nombres', ($("#nombres") && $("#nombres").value) || '');
+  fd.append('apellidos', ($("#apellidos") && $("#apellidos").value) || '');
+  fd.append('email', ($("#emailInst") && $("#emailInst").value) || '');
+  fd.append('telefono', ($("#telefono") && $("#telefono").value) || '');
+  fd.append('carrera', ($("#carrera") && $("#carrera").value) || '');
+  // Importante: "fechaGraduaacion" en el Controller
+  fd.append('fechaGraduaacion', ($("#fechaGrad") && $("#fechaGrad").value) || '');
+  fd.append('promedio', toDecimalString(($("#promedio") && $("#promedio").value) || '0'));
+  fd.append('consentimiento', ($("#consentPrivacy") && $("#consentPrivacy").checked) ? 'true' : 'false');
+
+  // CV (obligatorio si NO trabaja)
+  var cvInput = $("#cvFile");
+  var cvB = (cvInput && cvInput.files && cvInput.files[0]) ? cvInput.files[0] : null;
+  if(!isTrabajando && !cvB){
+    alert("Adjunta tu CV (PDF) para continuar.");
+    return Promise.reject(new Error("CV requerido"));
+  }
+  if(cvB){ fd.append('CV', cvB); }
+
+  // Experiencia / habilidades / idiomas / certificaciones
+  fd.append('experiencia', ($("#experiencia") && $("#experiencia").value) || '0');
+  var habilidades = isTrabajando ? ( ($("#skills") && $("#skills").value) || '' )
+                                 : ( ($("#skills2") && $("#skills2").value) || '' );
+  var idioma = isTrabajando ? ( ($("#idioma") && $("#idioma").value) || '' )
+                            : ( ($("#idioma2") && $("#idioma2").value) || '' );
+  var nivel  = isTrabajando ? ( ($("#nivel") && $("#nivel").value) || '' )
+                            : ( ($("#nivel2") && $("#nivel2").value) || '' );
+  fd.append('habilidades', habilidades);
+  fd.append('idiomas', idioma ? (nivel ? (idioma + " (" + nivel + ")") : idioma) : '');
+  fd.append('certificaciones', ($("#certificaciones") && $("#certificaciones").value) || '');
+  fd.append('password', ($("#password") && $("#password").value) || '');
+
+  var btns = Array.prototype.slice.call(document.querySelectorAll('button')).filter(function(b){ return b.id && b.id.indexOf('btnStep3')===0; });
+  btns.forEach(function(b){ b.disabled=true; });
+
+  return fetch(URLS.reg, {
+      method:'POST',
+      body: fd,
+      credentials:'same-origin',
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(safeJson)
+    .then(function(json){
+      if(!json || !json.success){ throw new Error((json && json.message) || 'Error registrando egresado'); }
+      return json.idEgresado;
+    })
+    .catch(function(err){ alert(err.message || 'Error registrando egresado'); throw err; })
+    .finally(function(){ btns.forEach(function(b){ b.disabled=false; }); });
+}
+
+// ===== POST: Guardar situación laboral =====
+function postGuardarSituacionLaboral(idEgresado, isTrabajando){
+  var payload = {
+    idEgresado: idEgresado,
+    trabajandoActualmente: !!isTrabajando,
+    empresaActual: '',
+    cargoActual: '',
+    rangoSalarial: '',
+    modalidadTrabajo: '',
+    satisfaccionTrabajo: null,
+    usaConocimientosCarrera: null,
+    tiempoConseguirTrabajo: null,
+    contactaUniversidad: ($("#contactaUniversidad") && $("#contactaUniversidad").value) || null,
+    deseaContacto: ($("#deseaContacto") && $("#deseaContacto").checked) ? 1 : 0,
+    dispuestoEncuestaSemestral: ($("#encuestaSemestral") && $("#encuestaSemestral").checked) ? 1 : 0,
+    metodoInicioSesion: 'Formulario',
+    respuestasJson: '',
+    sugerenciaFuncionalidad: ($("#sugerencia") && $("#sugerencia").value) || null
+  };
+
+  if(isTrabajando){
+    payload.empresaActual = ($("#empresa") && $("#empresa").value) || '';
+    payload.cargoActual   = ($("#cargo") && $("#cargo").value) || '';
+    payload.rangoSalarial = ($("#rango") && $("#rango").value) || 'Confidencial';
+    payload.modalidadTrabajo = ($("#modalidad") && $("#modalidad").value) || '';
+    payload.satisfaccionTrabajo = ($("#satisfaccion") && $("#satisfaccion").value) ? parseInt($("#satisfaccion").value,10) : null;
+    payload.usaConocimientosCarrera = ($("#usaConocimientos") && $("#usaConocimientos").checked) ? true : null;
+    payload.tiempoConseguirTrabajo = parseMeses(($("#tiempoPrimerEmpleo") && $("#tiempoPrimerEmpleo").value) || '');
+
+    var extrasA = {
+      area: ($("#area") && $("#area").value) || '',
+      tipoContrato: ($("#tipoContr") && $("#tipoContr").value) || '',
+      antiguedad: ($("#antig") && $("#antig").value) || '',
+      idioma: ($("#idioma") && $("#idioma").value) || '',
+      nivel: ($("#nivel") && $("#nivel").value) || '',
+      skills: ($("#skills") && $("#skills").value) || '',
+      beneficios: {
+        medico: ($("#ben1") && $("#ben1").checked) || false,
+        bono: ($("#ben2") && $("#ben2").checked) || false,
+        remoto: ($("#ben3") && $("#ben3").checked) || false
+      },
+      consentMarketing: ($("#consentMarketing") && $("#consentMarketing").checked) || false
+    };
+    payload.respuestasJson = JSON.stringify(extrasA);
+  }else{
+    payload.empresaActual = '';
+    payload.cargoActual   = '';
+    payload.rangoSalarial = 'N/A';
+    payload.modalidadTrabajo = ($("#modalPref") && $("#modalPref").value) || '';
+    payload.satisfaccionTrabajo = null;
+    payload.usaConocimientosCarrera = null;
+    payload.tiempoConseguirTrabajo = null;
+
+    var extrasB = {
+      dispInmediata: ($("#dispInmediata") && $("#dispInmediata").checked) || false,
+      fechaDisponible: ($("#fechaDisp") && $("#fechaDisp").value) || null,
+      jornada: ($("#jornada") && $("#jornada").value) || '',
+      areas: ($("#areas") && $("#areas").value) || '',
+      ubicaciones: ($("#locs") && $("#locs").value) || '',
+      idioma: ($("#idioma2") && $("#idioma2").value) || '',
+      nivel: ($("#nivel2") && $("#nivel2").value) || '',
+      skills: ($("#skills2") && $("#skills2").value) || '',
+      alertasEmpleo: ($("#alertasEmpleo") && $("#alertasEmpleo").checked) || false,
+      consentMarketing: ($("#consentMarketing") && $("#consentMarketing").checked) || false
+    };
+    payload.respuestasJson = JSON.stringify(extrasB);
+  }
+
+  var btns = Array.prototype.slice.call(document.querySelectorAll('button')).filter(function(b){ return b.id && b.id.indexOf('btnStep3')===0; });
+  btns.forEach(function(b){ b.disabled=true; });
+
+  return fetch(URLS.sit, {
+    method:'POST',
+    headers:{
+      'Accept':'application/json',
+      'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8',
+      'RequestVerificationToken': getToken(),
+      'X-Requested-With': 'XMLHttpRequest'
+    },
+    body: toForm(payload),
+    credentials: 'same-origin'
+  })
+  .then(safeJson)
+  .then(function(json){
+    if(!json || !json.success){ throw new Error((json && json.message) || 'Error guardando situación laboral'); }
+    return true;
+  })
+  .catch(function(err){ alert(err.message || 'Error guardando situación laboral'); throw err; })
+  .finally(function(){ btns.forEach(function(b){ b.disabled=false; }); });
+}
+
+// ===== Paso 3: Alternar ramas y finalizar =====
+(function(){
+  var trabajaSi = $("#trabajaSi");
+  var trabajaNo = $("#trabajaNo");
+  var trabajaSi2 = $("#trabajaSi2");
+  var trabajaNo2 = $("#trabajaNo2");
+
+    // Reemplaza los 4 listeners por este helper y nuevos listeners
+    function setTrabajo(isSi) {
+        var si1 = $("#trabajaSi"), no1 = $("#trabajaNo"),
+            si2 = $("#trabajaSi2"), no2 = $("#trabajaNo2");
+        if (si1) si1.checked = !!isSi;
+        if (no1) no1.checked = !isSi;
+        if (si2) si2.checked = !!isSi;
+        if (no2) no2.checked = !isSi;
+        showStep(isSi ? "wizard-step3A" : "wizard-step3B");
+    }
+
+    if (trabajaSi) trabajaSi.addEventListener("change", function () { if (this.checked) setTrabajo(true); });
+    if (trabajaNo) trabajaNo.addEventListener("change", function () { if (this.checked) setTrabajo(false); });
+    if (trabajaSi2) trabajaSi2.addEventListener("change", function () { if (this.checked) setTrabajo(true); });
+    if (trabajaNo2) trabajaNo2.addEventListener("change", function () { if (this.checked) setTrabajo(false); });
+
+    // Estado inicial coherente al entrar al paso 3
+    setTrabajo((trabajaSi && trabajaSi.checked) || (trabajaSi2 && trabajaSi2.checked));
+
+  var b3AB = $("#btnStep3ABack");
+  var b3BB = $("#btnStep3BBack");
+  if(b3AB) b3AB.addEventListener("click", function(){ showStep("wizard-step2"); });
+  if(b3BB) b3BB.addEventListener("click", function(){ showStep("wizard-step2"); });
+
+  function finalizar(isTrabajando){
+    var p1 = ($("#password") && $("#password").value) || '';
+    var p2 = ($("#password2") && $("#password2").value) || '';
+    if(p1.length < 6 || p1 !== p2){ alert("La contraseña debe tener al menos 6 caracteres y coincidir."); return; }
+
+    postRegistrarEgresado(isTrabajando)
+      .then(function(id){ return postGuardarSituacionLaboral(id, isTrabajando); })
+      .then(function(){ alert("¡Onboarding completado!"); window.location.href = URLS.home; })
+      .catch(function(){ /* errores ya notificados */ });
+  }
+
+  var fA = $("#btnStep3AFinish");
+  var fB = $("#btnStep3BFinish");
+  if(fA) fA.addEventListener("click", function(){ finalizar(true); });
+  if(fB) fB.addEventListener("click", function(){ finalizar(false); });
+})();
+
+// Inicial
+showStep("wizard-step1");
+});
+</script>
