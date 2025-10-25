@@ -1,9 +1,5 @@
-﻿using SeguimientoEgresados.DTO;
-using SeguimientoEgresados.Models;
-using System;
-using System.Collections.Generic;
+﻿using SeguimientoEgresados.Models;
 using System.Linq;
-using System.Web;
 
 namespace SeguimientoEgresados.Servicios
 {
@@ -11,12 +7,22 @@ namespace SeguimientoEgresados.Servicios
     {
         private readonly SistemaEgresadosUtecEntities _db = new SistemaEgresadosUtecEntities();
 
+        /// <summary>
+        /// Valida credenciales. Devuelve rol y userId si es correcto.
+        /// </summary>
         public bool Login(string email, string password, out string rol, out int userId)
         {
             rol = null;
             userId = 0;
 
-            var admin = _db.Administradores.FirstOrDefault(a => a.email == email && a.activo == true);
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+                return false;
+
+            var emailNorm = email.Trim().ToLower();
+
+            // Admin
+            var admin = _db.Administradores
+                .FirstOrDefault(a => a.activo == true && a.email.ToLower() == emailNorm);
             if (admin != null && BCrypt.Net.BCrypt.Verify(password, admin.password_hash))
             {
                 rol = "Admin";
@@ -24,7 +30,9 @@ namespace SeguimientoEgresados.Servicios
                 return true;
             }
 
-            var egresado = _db.Egresados.FirstOrDefault(e => e.email == email && e.estado_activo == true);
+            // Egresado
+            var egresado = _db.Egresados
+                .FirstOrDefault(e => e.estado_activo == true && e.email.ToLower() == emailNorm);
             if (egresado != null && BCrypt.Net.BCrypt.Verify(password, egresado.password_hash))
             {
                 rol = "Egresado";
@@ -32,7 +40,9 @@ namespace SeguimientoEgresados.Servicios
                 return true;
             }
 
-            var empresa = _db.Usuarios_Empresa.FirstOrDefault(u => u.email == email && u.activo == true);
+            // Empresa
+            var empresa = _db.Usuarios_Empresa
+                .FirstOrDefault(u => u.activo == true && u.email.ToLower() == emailNorm);
             if (empresa != null && BCrypt.Net.BCrypt.Verify(password, empresa.password_hash))
             {
                 rol = "Empresa";

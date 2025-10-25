@@ -147,6 +147,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AutenticacionController.cs" />
     <Compile Include="Controllers\DashboardsController.cs" />
+    <Compile Include="Controllers\GestionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RegistroController.cs" />
     <Compile Include="Controllers\UtilController.cs" />
@@ -202,16 +203,10 @@
     <Compile Include="Models\Matching_Resultados.cs">
       <DependentUpon>EgresadosModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Mentoria.cs">
-      <DependentUpon>EgresadosModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Notificacione.cs">
       <DependentUpon>EgresadosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Procesos_Seleccion.cs">
-      <DependentUpon>EgresadosModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Sesiones_Mentoria.cs">
       <DependentUpon>EgresadosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Usuarios_Empresa.cs">
@@ -225,7 +220,11 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicios\Autenticacion.cs" />
+    <Compile Include="Servicios\Dashboard.cs" />
+    <Compile Include="Servicios\Gestion.cs" />
     <Compile Include="Servicios\Registro.cs" />
+    <Compile Include="Servicios\Utilidades.cs" />
+    <Compile Include="ViewModels\DashboardEgresadoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -244,9 +243,13 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="CSS\DashboardEgresado.css" />
+    <Content Include="CSS\Registro.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="JS\DashboardEgresado.js" />
+    <Content Include="JS\Registro.js" />
     <Content Include="Models\EgresadosModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EgresadosModel.edmx</DependentUpon>
@@ -306,6 +309,9 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Clases Auxiliares\" />
+    <Folder Include="Views\CV\" />
+    <Folder Include="Views\Dashboard\" />
+    <Folder Include="Views\Gestion\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

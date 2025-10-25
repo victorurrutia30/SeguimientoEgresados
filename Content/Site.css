@@ -316,3 +316,122 @@ body {
         font-size: .95rem;
     }
 }
+
+/* === NAVBAR UTEC === */
+.app-navbar {
+    background: #5D0A28;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,.08);
+}
+
+    .app-navbar .nav-inner.container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 10px 16px;
+    }
+
+.brand-pill {
+    display: inline-block;
+    color: #fff !important;
+    background: rgba(255,255,255,.08);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.nav-toggle {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.45);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.nav-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 16px;
+}
+
+    .nav-menu .nav-link {
+        color: #fff !important;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 6px 8px;
+        border-radius: 4px;
+    }
+
+        .nav-menu .nav-link:hover {
+            background: rgba(255,255,255,.1);
+        }
+
+.user-chip {
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 8px;
+}
+
+.btn.btn-ghost {
+    border: 1px solid rgba(255,255,255,.45);
+    background: transparent;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+    .btn.btn-ghost:hover {
+        background: rgba(255,255,255,.1);
+    }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-inner.container {
+        flex-wrap: wrap;
+    }
+
+    .nav-menu {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        padding: 8px 0;
+    }
+
+        .nav-menu.is-open {
+            display: flex;
+        }
+}
+
+/* Fix mínimo para navbar si Bootstrap no cargara */
+.app-navbar .nav-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 16px;
+}
+
+.app-navbar a {
+    color: #fff !important;
+    text-decoration: none;
+}
+
+/* Clon de .sr-only de Bootstrap (oculta el texto "Abrir menú" si no hay bootstrap.css) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}

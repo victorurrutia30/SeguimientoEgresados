@@ -1,49 +1,42 @@
-﻿using System;
-using System.Linq;
+﻿using SeguimientoEgresados.Models; // Contexto EF (SistemaEgresadosUtecEntities)
+using System;
 using System.Web;
 using System.Web.Mvc;
-using SeguimientoEgresados.Models; // Contexto EF (SistemaEgresadosUtecEntities)
 
 namespace SeguimientoEgresados.Controllers
 {
     public class RegistroController : Controller
     {
         private readonly Servicios.Registro _servicioRegistro = new Servicios.Registro();
+        private readonly Servicios.Utilidades _servicioUtilidades = new Servicios.Utilidades();
         private readonly SistemaEgresadosUtecEntities db = new SistemaEgresadosUtecEntities();
 
         [AllowAnonymous]
         public ActionResult Index()
         {
             // Cargar Carreras activas para el combo
-            ViewBag.Carreras = db.Carreras
-                .Where(c => c.activo == true)
-                .OrderBy(c => c.nombre_carrera)
-                .Select(c => new SelectListItem
-                {
-                    Value = c.id_carrera.ToString(),
-                    Text = c.nombre_carrera
-                })
-                .ToList();
+            ViewBag.Carreras = _servicioUtilidades.ObtenerCarreras().Datos;
 
             return View();
         }
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public JsonResult RegistrarEgresado(
-            string numeroDocumento, string nombres, string apellidos,
-            string email, string telefono, int carrera, DateTime fechaGraduaacion, decimal promedio, bool consentimiento,
-            HttpPostedFileBase CV, int experiencia, string habilidades, string idiomas, string certificaciones,
-            string password)
+    string numeroDocumento, string nombres, string apellidos,
+    string email, string telefono, int carrera, DateTime fechaGraduacion, decimal promedio, bool consentimiento,
+    HttpPostedFileBase CV, int experiencia, string habilidades, string idiomas, string certificaciones,
+    string password)
         {
             // Hash del password antes de guardar
             var auth = new Servicios.AuthService();
             var hash = auth.HashPassword(password);
 
             var resultado = _servicioRegistro.RegistrarEgresado(
-                numeroDocumento, nombres, apellidos,
-                email, telefono, carrera, fechaGraduaacion, promedio, consentimiento,
-                CV, experiencia, habilidades, idiomas, certificaciones, hash);
+    numeroDocumento, nombres, apellidos,
+    email, telefono, carrera, fechaGraduacion, promedio, consentimiento,
+    CV, experiencia, habilidades, idiomas, certificaciones, hash);
 
             if (resultado.Exito)
             {
@@ -60,6 +53,8 @@ namespace SeguimientoEgresados.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public JsonResult GuardarSituacionLaboral(
             int idEgresado,
             bool trabajandoActualmente,

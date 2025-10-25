@@ -4,13 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="db2e9ff2e655433eb90b91f5bbd5f67b" Name="Diagram1" ZoomLevel="70">
+      <Diagram DiagramId="db2e9ff2e655433eb90b91f5bbd5f67b" Name="Diagram1" ZoomLevel="120">
         <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Administradore" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Carrera" Width="1.5" PointX="0.75" PointY="11.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SistemaEgresadosUtecModel.CVs_Egresados" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Egresado" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
         <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Empresa" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Encuestas_Base" Width="1.5" PointX="5.25" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Encuestas_Base" Width="2.375" PointX="5.25" PointY="11.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Estrellas_Egresado" Width="1.5" PointX="12.75" PointY="8.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Evaluaciones_Proceso" Width="1.5" PointX="12.75" PointY="13.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Logs_Sistema" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
@@ -35,12 +35,7 @@
         <AssociationConnector Association="SistemaEgresadosUtecModel.FK_UsuariosEmpresa_Empresas" ManuallyRouted="false" />
         <AssociationConnector Association="SistemaEgresadosUtecModel.FK_Estrellas_Procesos" ManuallyRouted="false" />
         <AssociationConnector Association="SistemaEgresadosUtecModel.FK_EvaluacionesProceso_Procesos" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Mentoria" Width="1.5" PointX="5.25" PointY="23.625" />
-        <EntityTypeShape EntityType="SistemaEgresadosUtecModel.Sesiones_Mentoria" Width="1.5" PointX="7.5" PointY="24.375" />
-        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_Mentorias_Mentee" />
-        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_Mentorias_Mentor" />
-        <AssociationConnector Association="SistemaEgresadosUtecModel.FK_Sesiones_Mentoria_Mentoria" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

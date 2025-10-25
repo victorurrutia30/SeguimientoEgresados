@@ -1,0 +1,241 @@
+﻿/* Tokens de marca */
+:root {
+    --brand-primary: #5D0A28;
+    --brand-secondary: #F8F9FA;
+    --brand-tertiary: #343A40;
+    --bs-primary: var(--brand-primary);
+    --bs-secondary: var(--brand-secondary);
+    --bs-dark: var(--brand-tertiary);
+    --bs-body-bg: var(--brand-secondary);
+    --bs-body-color: var(--brand-tertiary);
+    --bs-link-color: var(--brand-primary);
+    --bs-link-hover-color: #7a1036;
+}
+
+/* Base */
+body {
+    background-color: var(--brand-secondary);
+    color: var(--brand-tertiary);
+}
+
+.text-tertiary {
+    color: var(--brand-tertiary) !important;
+}
+
+/* Header pegajoso */
+.onb-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: #ffffff;
+    border-bottom: 1px solid rgba(52,58,64,.12);
+}
+
+.brand-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    background: rgba(93,10,40,.08);
+    color: var(--brand-primary);
+    border: 1px solid rgba(93,10,40,.18);
+    padding: .35rem .6rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: .9rem;
+}
+
+/* Contenedor principal */
+.onb-wrap {
+    max-width: 980px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+/* Card principal del paso */
+.onb-card {
+    background: #fff;
+    border: 1px solid rgba(52,58,64,.12);
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.04);
+}
+
+/* Botonera inferior */
+.onb-actions {
+    gap: .5rem;
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--brand-tertiary);
+    border: 1px solid rgba(52,58,64,.3);
+}
+
+    .btn-ghost:hover {
+        background: rgba(52,58,64,.05);
+    }
+
+/* Stepper + barra de progreso */
+.stepper {
+    position: relative;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 8px;
+}
+
+.step {
+    text-align: center;
+    position: relative;
+    padding-top: 28px;
+}
+
+    .step .dot {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 0;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        border: 2px solid var(--brand-primary);
+        background: #fff;
+        color: var(--brand-primary);
+        font-weight: 700;
+        font-size: .9rem;
+    }
+
+    .step.active .dot, .step.done .dot {
+        background: var(--brand-primary);
+        color: #fff;
+    }
+
+    .step .label {
+        font-weight: 700;
+        color: var(--brand-tertiary);
+        font-size: .9rem;
+    }
+
+    .step .desc {
+        font-size: .8rem;
+        color: #6c757d;
+    }
+
+.progress-rail {
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 13px;
+    height: 4px;
+    background: rgba(52,58,64,.15);
+    border-radius: 999px;
+}
+
+.progress-fill {
+    position: absolute;
+    left: 8%;
+    top: 13px;
+    height: 4px;
+    background: var(--brand-primary);
+    border-radius: 999px;
+    width: 0%;
+}
+
+.progress-33 .progress-fill {
+    width: 33%;
+}
+
+.progress-66 .progress-fill {
+    width: 66%;
+}
+
+.progress-100 .progress-fill {
+    width: 100%;
+}
+
+/* Titles y ayudas */
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin: 0 0 .75rem 0;
+    color: var(--brand-tertiary);
+    font-weight: 700;
+}
+
+    .section-title .icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        background: var(--brand-primary);
+    }
+
+.form-text, .form-hint, .input-legal {
+    color: #6c757d;
+}
+
+.form-hint {
+    font-size: .85rem;
+}
+
+.input-legal {
+    font-size: .9rem;
+}
+
+/* Dropzone simple */
+.dropzone {
+    border: 2px dashed rgba(52,58,64,.25);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+    background: #fff;
+}
+
+    .dropzone .lead {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .dropzone small {
+        color: #6c757d;
+    }
+
+/* Footer simple */
+.onb-footer {
+    color: #6c757d;
+    font-size: .9rem;
+}
+
+/* “Pantallas” para imprimir/capturar */
+.screen {
+    margin: 28px 0 48px;
+}
+
+@@media print {
+    .screen {
+        break-after: page;
+    }
+}
+
+/* Badges */
+.pill-preload {
+    display: inline-block;
+    padding: .25rem .5rem;
+    border-radius: 999px;
+    background: rgba(52,58,64,.08);
+    color: var(--brand-tertiary);
+    font-size: .8rem;
+    border: 1px solid rgba(52,58,64,.18);
+}
+
+/* Accesibilidad */
+:focus-visible {
+    outline: 3px dashed rgba(93,10,40,.6);
+    outline-offset: 2px;
+}

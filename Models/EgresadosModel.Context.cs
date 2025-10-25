@@ -43,8 +43,6 @@ namespace SeguimientoEgresados.Models
         public virtual DbSet<Usuarios_Empresa> Usuarios_Empresa { get; set; }
         public virtual DbSet<VW_Dashboard_Egresados> VW_Dashboard_Egresados { get; set; }
         public virtual DbSet<VW_Estadisticas_Empresas> VW_Estadisticas_Empresas { get; set; }
-        public virtual DbSet<Mentoria> Mentorias { get; set; }
-        public virtual DbSet<Sesiones_Mentoria> Sesiones_Mentoria { get; set; }
     
         public virtual int SP_CalcularMatching(Nullable<int> id_empresa, Nullable<int> top_candidates)
         {
@@ -57,6 +55,128 @@ namespace SeguimientoEgresados.Models
                 new ObjectParameter("top_candidates", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CalcularMatching", id_empresaParameter, top_candidatesParameter);
+        }
+    
+        public virtual int SP_ArchivarMentoria(Nullable<int> id_mentoria, string usuario_tipo, Nullable<int> id_usuario, string ip_address)
+        {
+            var id_mentoriaParameter = id_mentoria.HasValue ?
+                new ObjectParameter("id_mentoria", id_mentoria) :
+                new ObjectParameter("id_mentoria", typeof(int));
+    
+            var usuario_tipoParameter = usuario_tipo != null ?
+                new ObjectParameter("usuario_tipo", usuario_tipo) :
+                new ObjectParameter("usuario_tipo", typeof(string));
+    
+            var id_usuarioParameter = id_usuario.HasValue ?
+                new ObjectParameter("id_usuario", id_usuario) :
+                new ObjectParameter("id_usuario", typeof(int));
+    
+            var ip_addressParameter = ip_address != null ?
+                new ObjectParameter("ip_address", ip_address) :
+                new ObjectParameter("ip_address", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_ArchivarMentoria", id_mentoriaParameter, usuario_tipoParameter, id_usuarioParameter, ip_addressParameter);
+        }
+    
+        public virtual int SP_ArchivarSesionMentoria(Nullable<int> id_sesion, string usuario_tipo, Nullable<int> id_usuario, string ip_address)
+        {
+            var id_sesionParameter = id_sesion.HasValue ?
+                new ObjectParameter("id_sesion", id_sesion) :
+                new ObjectParameter("id_sesion", typeof(int));
+    
+            var usuario_tipoParameter = usuario_tipo != null ?
+                new ObjectParameter("usuario_tipo", usuario_tipo) :
+                new ObjectParameter("usuario_tipo", typeof(string));
+    
+            var id_usuarioParameter = id_usuario.HasValue ?
+                new ObjectParameter("id_usuario", id_usuario) :
+                new ObjectParameter("id_usuario", typeof(int));
+    
+            var ip_addressParameter = ip_address != null ?
+                new ObjectParameter("ip_address", ip_address) :
+                new ObjectParameter("ip_address", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_ArchivarSesionMentoria", id_sesionParameter, usuario_tipoParameter, id_usuarioParameter, ip_addressParameter);
+        }
+    
+        public virtual int SP_EliminarMentoria(Nullable<int> id_mentoria, string usuario_tipo, Nullable<int> id_usuario, string ip_address)
+        {
+            var id_mentoriaParameter = id_mentoria.HasValue ?
+                new ObjectParameter("id_mentoria", id_mentoria) :
+                new ObjectParameter("id_mentoria", typeof(int));
+    
+            var usuario_tipoParameter = usuario_tipo != null ?
+                new ObjectParameter("usuario_tipo", usuario_tipo) :
+                new ObjectParameter("usuario_tipo", typeof(string));
+    
+            var id_usuarioParameter = id_usuario.HasValue ?
+                new ObjectParameter("id_usuario", id_usuario) :
+                new ObjectParameter("id_usuario", typeof(int));
+    
+            var ip_addressParameter = ip_address != null ?
+                new ObjectParameter("ip_address", ip_address) :
+                new ObjectParameter("ip_address", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_EliminarMentoria", id_mentoriaParameter, usuario_tipoParameter, id_usuarioParameter, ip_addressParameter);
+        }
+    
+        public virtual int SP_EliminarSesionMentoria(Nullable<int> id_sesion, string usuario_tipo, Nullable<int> id_usuario, string ip_address)
+        {
+            var id_sesionParameter = id_sesion.HasValue ?
+                new ObjectParameter("id_sesion", id_sesion) :
+                new ObjectParameter("id_sesion", typeof(int));
+    
+            var usuario_tipoParameter = usuario_tipo != null ?
+                new ObjectParameter("usuario_tipo", usuario_tipo) :
+                new ObjectParameter("usuario_tipo", typeof(string));
+    
+            var id_usuarioParameter = id_usuario.HasValue ?
+                new ObjectParameter("id_usuario", id_usuario) :
+                new ObjectParameter("id_usuario", typeof(int));
+    
+            var ip_addressParameter = ip_address != null ?
+                new ObjectParameter("ip_address", ip_address) :
+                new ObjectParameter("ip_address", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_EliminarSesionMentoria", id_sesionParameter, usuario_tipoParameter, id_usuarioParameter, ip_addressParameter);
+        }
+    
+        public virtual int SP_LimpiarSesionesHuerfanas()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_LimpiarSesionesHuerfanas");
+        }
+    
+        public virtual int SP_LogAccionSistema(string usuario_tipo, Nullable<int> id_usuario, string accion, string tabla_afectada, Nullable<int> id_registro, string detalles, string ip_address)
+        {
+            var usuario_tipoParameter = usuario_tipo != null ?
+                new ObjectParameter("usuario_tipo", usuario_tipo) :
+                new ObjectParameter("usuario_tipo", typeof(string));
+    
+            var id_usuarioParameter = id_usuario.HasValue ?
+                new ObjectParameter("id_usuario", id_usuario) :
+                new ObjectParameter("id_usuario", typeof(int));
+    
+            var accionParameter = accion != null ?
+                new ObjectParameter("accion", accion) :
+                new ObjectParameter("accion", typeof(string));
+    
+            var tabla_afectadaParameter = tabla_afectada != null ?
+                new ObjectParameter("tabla_afectada", tabla_afectada) :
+                new ObjectParameter("tabla_afectada", typeof(string));
+    
+            var id_registroParameter = id_registro.HasValue ?
+                new ObjectParameter("id_registro", id_registro) :
+                new ObjectParameter("id_registro", typeof(int));
+    
+            var detallesParameter = detalles != null ?
+                new ObjectParameter("detalles", detalles) :
+                new ObjectParameter("detalles", typeof(string));
+    
+            var ip_addressParameter = ip_address != null ?
+                new ObjectParameter("ip_address", ip_address) :
+                new ObjectParameter("ip_address", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_LogAccionSistema", usuario_tipoParameter, id_usuarioParameter, accionParameter, tabla_afectadaParameter, id_registroParameter, detallesParameter, ip_addressParameter);
         }
     }
 }

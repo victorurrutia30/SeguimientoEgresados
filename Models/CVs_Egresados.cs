@@ -34,6 +34,7 @@ namespace SeguimientoEgresados.Models
         public Nullable<System.DateTime> fecha_subida { get; set; }
         public Nullable<System.DateTime> fecha_actualizacion { get; set; }
         public Nullable<int> veces_visualizado { get; set; }
+        public string privacidad { get; set; }
     
         public virtual Egresado Egresado { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

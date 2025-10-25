@@ -1,5 +1,242 @@
-﻿@{
-    ViewBag.Title = "Dashboard Egresado";
+﻿@model SeguimientoEgresados.ViewModels.DashboardEgresadoVM
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var nombre = Model?.Resumen?.NombreCompleto ?? "Egresado";
+    var carrera = Model?.Resumen?.Carrera ?? "";
+    var fac = Model?.Resumen?.Facultad ?? "";
+    var fechaGrad = (Model?.Resumen?.FechaGraduacion != default(DateTime))
+                    ? Model.Resumen.FechaGraduacion.ToString("MMMM yyyy")
+                    : "";
+    var totalApps = Model?.Resumen?.TotalAplicaciones ?? 0;
+    var totalHire = Model?.Resumen?.TotalContrataciones ?? 0;
+    var punt = Model?.Resumen?.PuntuacionGlobal ?? 0m;
+    var totalStars = Model?.Resumen?.TotalEstrellas ?? 0;
+    var nivel = Model?.Resumen?.NivelExperiencia ?? "";
+    var cvDisponible = Model?.CvCard?.DisponibleBusqueda ?? false;
+    var privacidad = Model?.CvCard?.Privacidad ?? "Publico";
+    var cvViews = Model?.CvCard?.VecesVisualizado ?? 0;
+    var empresasVieron = (Model?.EmpresasQueVieron?.Count ?? 0);
+
+    var subtitleParts = new System.Collections.Generic.List<string>();
+
+    if (!string.IsNullOrWhiteSpace(carrera))
+    {
+        subtitleParts.Add("Egresado de " + carrera);
+    }
+
+    if (!string.IsNullOrWhiteSpace(fac))
+    {
+        subtitleParts.Add(fac);
+    }
+
+    if (!string.IsNullOrWhiteSpace(fechaGrad))
+    {
+        subtitleParts.Add("Graduado en " + fechaGrad);
+    }
+
+    var subtitle = string.Join(" • ", subtitleParts);
 }
-<h2>✅ Login exitoso (Egresado)</h2>
-<p>Bienvenido, estás autenticado como <strong>@ViewBag.Role</strong>.</p>
+<link rel="stylesheet" href="~/CSS/DashboardEgresado.css" />
+
+<main class="dashboard-egresado" role="main" aria-label="Dashboard de egresado">
+    <div class="dash-header-row">
+        <div class="dash-header-left">
+            <h1 class="dash-title">Dashboard</h1>
+            <span class="dash-subtitle">Panel de seguimiento</span>
+        </div>
+        <div class="dash-header-right">
+            <button class="icon-bell" id="notifBell" aria-label="Ver notificaciones">
+                🔔
+                <span class="notification-badge" id="notifBadge" style="display:none;">0</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="dash-container">
+        <aside class="dash-sidebar" aria-label="Secciones del egresado">
+            <div class="sidebar-item active">📊 Dashboard</div>
+            <div class="sidebar-item" onclick="window.location.href='@Url.Content("~/CV")'">📋 Mi CV</div>
+            <div class="sidebar-item" onclick="window.location.href='@Url.Content("~/Empleos")'">🔍 Búsqueda de Empleo</div>
+            <div class="sidebar-item" onclick="window.location.href='@Url.Content("~/Aplicaciones")'">📝 Mis Aplicaciones</div>
+        </aside>
+
+        <section class="dash-main">
+            <header class="welcome-section">
+                <h2 class="welcome-title">¡Bienvenido de vuelta, <span id="welcomeName">@nombre</span>! 👋</h2>
+                <p class="welcome-subtitle" id="welcomeSubtitle">@subtitle</p>
+            </header>
+
+            <section class="stats-grid" aria-label="Indicadores principales">
+                <article class="stat-card" id="cardPuntaje" role="button" tabindex="0">
+                    <div class="stat-icon" id="statPuntVal">@punt.ToString("0.0")</div>
+                    <div class="stat-title">Puntuación Global</div>
+                    <div class="stat-subtitle">Promedio de evaluaciones</div>
+                    <div class="stars-display" id="starsContainer"></div>
+                    <div class="level-text">
+                        <span id="totalEstrellasText">@totalStars</span> Estrellas<br />
+                        Nivel: <span id="nivelExpText">@nivel</span>
+                    </div>
+                </article>
+
+                <article class="stat-card" id="cardAplicaciones" role="button" tabindex="0">
+                    <div class="stat-value" id="statAplicacionesVal">@totalApps</div>
+                    <div class="stat-title">Aplicaciones</div>
+                    <div class="stat-subtitle">Total enviadas</div>
+                </article>
+
+                <article class="stat-card" id="cardContrataciones" role="button" tabindex="0">
+                    <div class="stat-value" id="statContratacionesVal">@totalHire</div>
+                    <div class="stat-title">Contrataciones</div>
+                    <div class="stat-subtitle">Procesos exitosos</div>
+                </article>
+            </section>
+
+            <section class="cards-row">
+                <article class="card" aria-labelledby="estadoLaboralTitle">
+                    <h3 class="card-header" id="estadoLaboralTitle">📊 Estado Laboral Actual</h3>
+                    <div class="card-body">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Empleado Actualmente</span>
+                                <span class="info-value" id="empleadoActualmente">—</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Satisfacción Laboral</span>
+                                <div class="rating-display">
+                                    <span class="rating-stars" id="satisfaccionStars"></span>
+                                    <span class="rating-number" id="satisfaccionNumber">—</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Empresa:</span>
+                                <span class="info-value" id="empresaActual">—</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Usa conocimientos de la carrera:</span>
+                                <span class="info-value" id="usaCarrera">—</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Cargo:</span>
+                                <span class="info-value" id="cargoActual">—</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Modalidad:</span>
+                                <span class="info-value"><span class="badge cyan" id="modalidadTrabajo">—</span></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Última actualización:</span>
+                                <span class="info-value" id="fechaEncuesta">—</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card" aria-labelledby="visibilidadTitle">
+                    <h3 class="card-header" id="visibilidadTitle">✓ Visibilidad del CV</h3>
+                    <div class="card-body">
+                        <div class="visibility-content">
+                            <div class="visibility-number" id="cvViewsNumber">@cvViews</div>
+                            <div class="visibility-label">Visualizaciones</div>
+                            <div class="visibility-subtitle">
+                                Tu CV fue visto por <span id="empresasVieronCount">@empresasVieron</span> empresas diferentes
+                            </div>
+                            <div class="info-grid" style="margin-bottom:12px;">
+                                <div class="info-item">
+                                    <span class="info-label">Privacidad</span>
+                                    <select id="ddlPrivacidad" class="select-privacidad" aria-label="Nivel de privacidad del CV">
+                                        <option value="Publico" @(privacidad == "Publico" ? "selected" : "")>Público</option>
+                                        <option value="SoloEmpresas" @(privacidad == "SoloEmpresas" ? "selected" : "")>Solo empresas</option>
+                                        <option value="Privado" @(privacidad == "Privado" ? "selected" : "")>Privado</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="toggle-row">
+                                <span class="info-label">Disponible para búsqueda</span>
+                                <div class="toggle-switch @(cvDisponible ? "" : "inactive")" id="cvToggle" role="switch" aria-checked="@(cvDisponible ? "true" : "false")" tabindex="0"></div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <section class="table-section" aria-labelledby="procesosTitle">
+                <div class="table-header">
+                    <h3 class="table-title" id="procesosTitle">📋 Procesos de Selección Recientes</h3>
+                    <button class="view-all-btn" id="btnVerTodos" type="button">Ver todos</button>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Empresa</th>
+                                <th>Vacante</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="procesosBody">
+                            @if (Model?.Procesos != null)
+                            {
+                                foreach (var p in Model.Procesos)
+                                {
+                                    var fecha = p.FechaActualizacion ?? p.FechaInicio;
+                                    var cls = p.EstadoProceso == "En_Revision" ? "status-revision"
+                                            : p.EstadoProceso == "Entrevista_Tecnica" ? "status-entrevista"
+                                            : p.Contratado ? "status-contratado" : "";
+                                    <tr data-empresa="@p.Empresa" data-id="@p.IdProceso">
+                                        <td>
+                                            <div class="company-cell">
+                                                <span class="company-name">@p.Empresa</span>
+                                            </div>
+                                        </td>
+                                        <td>@p.TituloVacante</td>
+                                        <td><span class="status-badge @cls">@p.EstadoProceso</span></td>
+                                        <td>@(fecha.HasValue ? fecha.Value.ToString("dd MMM yyyy") : "-")</td>
+                                        <td><button class="action-btn btnVerProceso" type="button">Ver detalles</button></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </div>
+
+    <div class="modal" id="modal" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalHeader">
+            <div class="modal-header" id="modalHeader"></div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-primary" id="btnModalClose" type="button">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <form id="dashboardForm" style="display:none;">
+        @Html.AntiForgeryToken()
+    </form>
+
+    <div id="endpoints"
+         data-resumen="@Url.Action("Resumen","Dashboard")"
+         data-cvcard="@Url.Action("CvCard","Dashboard")"
+         data-matching="@Url.Action("MatchingTop","Dashboard")"
+         data-procesos="@Url.Action("Procesos","Dashboard")"
+         data-notifs="@Url.Action("Notificaciones","Dashboard")"
+         data-encuesta="@Url.Action("Encuesta","Dashboard")"
+         data-evals="@Url.Action("Evaluaciones","Dashboard")"
+         data-vieron="@Url.Action("EmpresasQueVieron","Dashboard")"
+         data-togglecv="@Url.Action("ToggleDisponibleBusqueda","Dashboard")"
+         data-privacidad="@Url.Action("CambiarPrivacidad","Dashboard")"
+         data-markread="@Url.Action("MarcarNotificacionLeida","Dashboard")"
+         data-markall="@Url.Action("MarcarTodasLeidas","Dashboard")">
+    </div>
+</main>
+
+
+    <script src="~/JS/DashboardEgresado.js"></script>
+

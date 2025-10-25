@@ -95,12 +95,8 @@
         letter-spacing: .2px;
     }
 
-    .aux-links a {
-        text-decoration: none;
-    }
-    .aux-links a:hover {
-        text-decoration: underline;
-    }
+    .aux-links a { text-decoration: none; }
+    .aux-links a:hover { text-decoration: underline; }
 
     .divider {
         height: 1px;
@@ -108,10 +104,7 @@
         margin: 20px 0;
     }
 
-    .small-muted {
-        color: #6c757d;
-        font-size: .9rem;
-    }
+    .small-muted { color: #6c757d; font-size: .9rem; }
 </style>
 
 <div class="login-page" data-bg>
@@ -134,6 +127,7 @@
 
                 @using (Html.BeginForm("Index", "Autenticacion", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
                 {
+                    @Html.AntiForgeryToken() <!-- NECESARIO para [ValidateAntiForgeryToken] -->
                     <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
 
                     <div class="mb-3">
@@ -143,6 +137,7 @@
                                id="email"
                                name="email"
                                placeholder="tucorreo@utec.edu.sv"
+                               autocomplete="username"
                                required />
                     </div>
 
@@ -153,10 +148,15 @@
                                id="password"
                                name="password"
                                placeholder="••••••••"
+                               autocomplete="current-password"
                                required />
                     </div>
 
-                    <div class="d-flex justify-content-end aux-links mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4 aux-links">
+                        <label for="rememberMe" class="small" style="margin:0; display:flex; align-items:center; gap:8px;">
+                            <input id="rememberMe" name="rememberMe" type="checkbox" value="true" />
+                            Recordarme
+                        </label>
                         <a href="#" class="small">¿Olvidaste tu contraseña?</a>
                     </div>
 

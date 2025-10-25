@@ -10,17 +10,19 @@ namespace SeguimientoEgresados.Controllers
     {
         private readonly AuthService _auth = new AuthService();
 
+        // GET: /Autenticacion
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Index(string returnUrl)
         {
-            // Oculta navbar si lo estás usando así en el layout
+            // Oculta navbar en la pantalla de login
             ViewBag.HideNavbar = true;
 
-            // Si ya está autenticado, mándalo a su destino
+            // Si ya está autenticado, envía a returnUrl (si es local) o Home
             if (User?.Identity?.IsAuthenticated == true)
             {
-                if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl) &&
+                if (!string.IsNullOrWhiteSpace(returnUrl) &&
+                    Url.IsLocalUrl(returnUrl) &&
                     !returnUrl.StartsWith("/Autenticacion", StringComparison.OrdinalIgnoreCase))
                 {
                     return Redirect(returnUrl);
@@ -32,40 +34,58 @@ namespace SeguimientoEgresados.Controllers
             return View();
         }
 
+        // POST: /Autenticacion
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Index(string email, string password, string returnUrl)
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(string email, string password, string returnUrl, bool rememberMe = false)
         {
-            // Asegura que vengan los names correctos desde el form
+            ViewBag.HideNavbar = true;
+
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
-                ViewBag.HideNavbar = true;
-                ViewBag.Error = "Ingresa tu correo y contraseña.";
+                ViewBag.Error = "Los datos no pueden ir vacíos.";
                 ViewBag.ReturnUrl = returnUrl;
                 return View();
             }
 
             if (_auth.Login(email, password, out string rol, out int userId))
             {
+                // Ticket con rol|userId en UserData (luego se parsea en Global.asax para Roles)
+                var issueDate = DateTime.Now;
+                var expiration = rememberMe ? issueDate.AddDays(7) : issueDate.AddHours(12);
+
                 var ticket = new FormsAuthenticationTicket(
-                    1,
-                    email,
-                    DateTime.Now,
-                    DateTime.Now.AddDays(1),
-                    false, // isPersistent
-                    $"{rol}|{userId}",
-                    FormsAuthentication.FormsCookiePath
+                    version: 1,
+                    name: email,
+                    issueDate: issueDate,
+                    expiration: expiration,
+                    isPersistent: rememberMe,
+                    userData: $"{rol}|{userId}",
+                    cookiePath: FormsAuthentication.FormsCookiePath
                 );
 
                 string encTicket = FormsAuthentication.Encrypt(ticket);
+
                 var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket)
                 {
                     HttpOnly = true,
-                    Expires = ticket.Expiration
+                    Expires = rememberMe ? expiration : DateTime.MinValue // si no es persistente, que sea cookie de sesión
                 };
+
+                // Endurecer cookie
+                cookie.Secure = Request.IsSecureConnection; // requiere HTTPS para marcar Secure
+#if NET472 || NET48
+                cookie.SameSite = SameSiteMode.Lax;
+#endif
+
                 Response.Cookies.Add(cookie);
 
-                // 1) Si el returnUrl es local y no apunta a Autenticacion, úsalo
+                // Guarda algo en sesión si te resulta útil
+                Session["UserId"] = userId;
+                Session["UserRole"] = rol;
+
+                // 1) Usa returnUrl si es local y no apunta a Autenticacion
                 if (!string.IsNullOrWhiteSpace(returnUrl) &&
                     Url.IsLocalUrl(returnUrl) &&
                     !returnUrl.StartsWith("/Autenticacion", StringComparison.OrdinalIgnoreCase))
@@ -73,7 +93,7 @@ namespace SeguimientoEgresados.Controllers
                     return Redirect(returnUrl);
                 }
 
-                // 2) Si no hay returnUrl válido, manda por rol
+                // 2) Sin returnUrl, redirige por rol
                 switch (rol)
                 {
                     case "Admin":
@@ -87,22 +107,36 @@ namespace SeguimientoEgresados.Controllers
                 }
             }
 
-            ViewBag.HideNavbar = true;
-            ViewBag.Error = "Usuario o contraseña incorrectos";
+            // Credenciales inválidas
+            ViewBag.Error = "Usuario o contraseña incorrectos.";
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
+        // POST: /Autenticacion/Logout
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Autenticacion");
+            try
+            {
+                FormsAuthentication.SignOut();
+                Session.Clear();
+                Session.Abandon();
+
+                // Invalida la cookie en el cliente por si acaso
+                var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, "")
+                {
+                    Expires = DateTime.Now.AddDays(-1),
+                    HttpOnly = true
+                };
+                Response.Cookies.Add(cookie);
+            }
+            catch { /* swallow: no exponemos detalles */ }
+
+            // Redirige a Home/Index como pediste
+            return RedirectToAction("Index", "Home");
         }
-
-        [Authorize(Roles = "Admin")]
-        public class AdministradoresController : Controller { }
-
-        [Authorize(Roles = "Egresado,Empresa")]
-        public class PortalController : Controller { }
     }
 }
